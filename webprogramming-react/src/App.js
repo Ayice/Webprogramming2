@@ -1,25 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './App.css'
-import LoginForm from './components/login-form/login-form'
+import Navbar from './components/Navbar/Navbar'
+import ChatroomContainer from './components/Chatrooms/Chatrooms'
 
-// import fire from './Firebase'
-
-class App extends Component {
-	// handleSubmit = todos => {
-	// 	// Tilføjer dem todos til databasen
-	// 	fire.collection('users').add({
-	// 		username: users.username,
-	// 		password: users.password
-	// 	})
-	// }
-
-	render() {
-		return (
-			<div className=''>
-				<LoginForm handleSubmit={this.handleSubmit} />
-			</div>
-		)
-	}
+function App() {
+	return (
+		<div className='App'>
+			<Navbar />
+			<ChatroomContainer />
+		</div>
+	)
 }
 
 export default App
