@@ -1,14 +1,25 @@
-import React from 'react';
-import './App.css';
-import SignUpForm from './components/signUpForm';
+import React, { Component } from 'react'
+import './App.css'
+import LoginForm from './components/login-form/login-form'
 
-function App() {
-  
-  return (
-    <div className="App">
-      <SignUpForm />
-    </div>
-  );
+// import fire from './Firebase'
+
+class App extends Component {
+	// handleSubmit = todos => {
+	// 	// Tilføjer dem todos til databasen
+	// 	fire.collection('users').add({
+	// 		username: users.username,
+	// 		password: users.password
+	// 	})
+	// }
+
+	render() {
+		return (
+			<div className=''>
+				<LoginForm handleSubmit={this.handleSubmit} />
+			</div>
+		)
+	}
 }
 
-export default App;
+export default App
