@@ -12,7 +12,22 @@ class LoginForm extends Component {
 			email: '',
 			password: ''
 		}
-		this.state = this.initialState
+
+		this.state = {
+			currentUser: { email: null }
+		}
+	}
+
+	componentDidMount() {
+		firebase.auth().onAuthStateChanged(
+			function(user) {
+				if (user) {
+					this.setState({ currentUser: { email: user.email } })
+				} else {
+					this.setState({ user: null })
+				}
+			}.bind(this)
+		)
 	}
 
 	handleChange = event => {
@@ -28,7 +43,9 @@ class LoginForm extends Component {
 		firebase
 			.auth()
 			.signInWithEmailAndPassword(email, password)
-			.then(response => console.log(response))
+			.then(() => {
+				this.state = this.initialState
+			})
 			.catch(function(error) {
 				var errorCode = error.code
 				var errorMessage = error.message
@@ -36,7 +53,27 @@ class LoginForm extends Component {
 			})
 	}
 
+	handleLogOut = () => {
+		firebase
+			.auth()
+			.signOut()
+			.then(
+				this.setState({
+					currentUser: { email: null }
+				})
+			)
+	}
+
 	render() {
+		const { currentUser } = this.state
+		let greeting
+
+		if (this.state.currentUser.email != null) {
+			greeting = <h2>hi {currentUser.email}</h2>
+		} else {
+			greeting = null
+		}
+
 		return (
 			<div id='login-section'>
 				<h1>Login to this mega awesome chat app</h1>
@@ -57,7 +94,10 @@ class LoginForm extends Component {
 					<h5>
 						Not a user? Sign up <a href='#ffds'>here</a>
 					</h5>
+					<button onClick={this.handleLogOut}>Log Out</button>
 				</div>
+
+				{greeting}
 			</div>
 		)
 	}
