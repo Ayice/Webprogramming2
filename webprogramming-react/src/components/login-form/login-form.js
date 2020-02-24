@@ -90,7 +90,7 @@ class LoginForm extends Component {
 					Not a user? Sign up <a href='{signup}'>here</a>
 				</h5>
 
-				<button onClick={this.logOut}></button>
+				<button onClick={this.logOut}>Log out</button>
 			</div>
 		)
 	}
