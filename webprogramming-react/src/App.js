@@ -1,13 +1,13 @@
 import React from 'react'
 import './App.css'
 import Navbar from './components/Navbar/Navbar'
-import ChatroomContainer from './components/Chatrooms/Chatrooms'
+import LoginForm from './components/login-form/login-form'
 
 function App() {
 	return (
 		<div className='App'>
-			<Navbar />
-			<ChatroomContainer />
+			< Navbar />
+			< LoginForm />
 		</div>
 	)
 }
