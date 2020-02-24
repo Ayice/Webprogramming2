@@ -24,7 +24,7 @@ class LoginForm extends Component {
 				if (user) {
 					this.setState({ currentUser: { email: user.email } })
 				} else {
-					this.setState({ user: null })
+					this.setState({ currentUser: { email: null } })
 				}
 			}.bind(this)
 		)
