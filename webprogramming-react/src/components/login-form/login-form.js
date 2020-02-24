@@ -1,27 +1,27 @@
-import React, { Component } from 'react';
-import './login-form.css';
+import React, { Component } from 'react'
+import './login-form.css'
 
 class LoginForm extends Component {
-    constructor(props) {
+	constructor(props) {
 		super(props)
 
 		this.initialState = {
 			username: '',
 			password: ''
-        }
-        this.state = this.initialState;
+		}
+		this.state = this.initialState
 
-        // this.handleChange = this.handleChange.bind(this)
-    }    
+		// this.handleChange = this.handleChange.bind(this)
+	}
 
-    handleChange = event => {
-		const { name, value } = event.target;
+	handleChange = event => {
+		const { name, value } = event.target
 		this.setState({
 			[name]: value
 		})
-    }
-    
-    submitForm = event => {
+	}
+
+	submitForm = event => {
 		event.preventDefault()
 
 		// Tjekker om vores inputs er tomme
@@ -37,27 +37,28 @@ class LoginForm extends Component {
 		}
 	}
 
-
-    render() {
+	render() {
 		return (
-            <div id="login-section">
-                <form onSubmit={this.submitForm}>
-                        <div>
-                            <input type='text' name='username' id='username'  placeholder='Username' onChange={this.handleChange} />
-                        </div>
-                        
-                        <div>
-                            <input type='text' name='password' id='password' placeholder='Password' onChange={this.handleChange} />
-                        </div>
-                        
-                        <button type='submit' value='Submit'>
-                            Login
-                        </button>
-                </form>
-                <h5>Not a user? Sign up <a href="{signup}">here</a></h5>
-            </div>
-		)
-    }
-  }
+			<div id='login-section'>
+				<form onSubmit={this.submitForm}>
+					<div>
+						<input type='text' name='username' id='username' placeholder='Username' onChange={this.handleChange} />
+					</div>
 
-export default LoginForm;
+					<div>
+						<input type='text' name='password' id='password' placeholder='Password' onChange={this.handleChange} />
+					</div>
+
+					<button type='submit' value='Submit'>
+						Login
+					</button>
+				</form>
+				<h5>
+					Not a user? Sign up <a href='{signup}'>here</a>
+				</h5>
+			</div>
+		)
+	}
+}
+
+export default LoginForm
