@@ -41,21 +41,25 @@ class LoginForm extends Component {
     render() {
 		return (
             <div id="login-section">
-                <form onSubmit={this.submitForm}>
-                        <div>
-                            <input type='text' name='username' id='username'  placeholder='Username' onChange={this.handleChange} />
-                        </div>
-                        
-                        <div>
-                            <input type='text' name='password' id='password' placeholder='Password' onChange={this.handleChange} />
-                        </div>
-                        
-                        <button type='submit' value='Submit'>
-                            Login
-                        </button>
-                </form>
-                <h5>Not a user? Sign up <a href="{signup}">here</a></h5>
+                <h1>Login to this mega awesome chat app</h1>
+                <div id="login-form">
+                    <form onSubmit={this.submitForm}>
+                            <div>
+                                <input type='text' name='username' id='username'  placeholder='Username' onChange={this.handleChange} />
+                            </div>
+                            
+                            <div>
+                                <input type='password' name='password' id='password' placeholder='Password' onChange={this.handleChange} />
+                            </div>
+                            
+                            <button type='submit' value='Submit'>
+                                Login
+                            </button>
+                    </form>
+                    <h5>Not a user? Sign up <a href="{signup}">here</a></h5>
+                </div>
             </div>
+            
 		)
     }
   }
