@@ -15,7 +15,7 @@ class LoginForm extends Component {
 		}
 
 		this.state = {
-			currentUser: { email: null }
+			currentUser: {}
 		}
 	}
 
@@ -23,9 +23,15 @@ class LoginForm extends Component {
 		firebase.auth().onAuthStateChanged(
 			function(user) {
 				if (user) {
-					this.setState({ currentUser: { email: user.email } })
+					fire
+						.collection('users')
+						.doc(user.uid)
+						.get()
+						.then(doc => {
+							this.setState({ currentUser: { ...doc.data() } })
+						})
 				} else {
-					this.setState({ currentUser: { email: null } })
+					this.setState({ currentUser: {} })
 				}
 			}.bind(this)
 		)
