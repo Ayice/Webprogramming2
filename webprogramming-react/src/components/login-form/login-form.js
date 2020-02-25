@@ -3,6 +3,12 @@ import './login-form.css'
 import fire from '../../firebase'
 import firebase from 'firebase'
 import 'firebase/auth'
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Link
+  } from "react-router-dom";
 
 class LoginForm extends Component {
 	constructor(props) {
@@ -92,7 +98,7 @@ class LoginForm extends Component {
 						</button>
 					</form>
 					<h5>
-						Not a user? Sign up <a href='#ffds'>here</a>
+						Not a user? Sign up <Link to="/signup">here</Link>
 					</h5>
 					<button onClick={this.handleLogOut}>Log Out</button>
 				</div>
