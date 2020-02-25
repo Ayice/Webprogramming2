@@ -6,25 +6,12 @@ class Navlist extends Component {
 		super(props)
 
 		this.state = {
-			isLoggedIn: false,
 			navList: []
 		}
 	}
 
-	handleLogout = () => {
-		this.setState({
-			isLoggedIn: false
-		})
-	}
-
-	handleLogIn = () => {
-		this.setState({
-			isLoggedIn: true
-		})
-	}
-
 	render() {
-		const isLoggedIn = this.state.isLoggedIn
+		const isLoggedIn = this.props.isLoggedIn
 		let list = this.state.navList
 		let button
 		if (isLoggedIn) {

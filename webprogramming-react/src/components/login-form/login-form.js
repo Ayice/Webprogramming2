@@ -19,24 +19,6 @@ class LoginForm extends Component {
 		}
 	}
 
-	componentDidMount() {
-		firebase.auth().onAuthStateChanged(
-			function(user) {
-				if (user) {
-					fire
-						.collection('users')
-						.doc(user.uid)
-						.get()
-						.then(doc => {
-							this.setState({ currentUser: { ...doc.data() } })
-						})
-				} else {
-					this.setState({ currentUser: {} })
-				}
-			}.bind(this)
-		)
-	}
-
 	handleChange = event => {
 		const { name, value } = event.target
 		this.setState({
