@@ -1,0 +1,25 @@
+nav {
+	display: flex;
+	flex-direction: row;
+	flex: 1 100%;
+	background-color: #016379;
+}
+
+nav ul {
+	display: flex;
+	flex-direction: row;
+	list-style: none;
+	width: 100%;
+	justify-content: flex-end;
+}
+
+nav ul > * {
+	margin: 0 2em;
+}
+
+nav ul li a {
+	font-size: 1.5em;
+	color: #fff;
+	font-weight: 700;
+	text-decoration: none;
+}
