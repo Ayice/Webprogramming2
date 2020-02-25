@@ -9,10 +9,10 @@ class ChatroomContainer extends Component {
 			chatrooms: []
 		}
 
-		this.chatroomsRef = fire
-			.database()
-			.ref()
-			.child('chatrooms')
+		// this.chatroomsRef = fire
+		// 	.database()
+		// 	.ref()
+		// 	.child('chatrooms')
 	}
 
 	// componentDidMount() {

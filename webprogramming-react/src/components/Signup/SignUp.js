@@ -28,18 +28,22 @@ export default class SignUpForm extends Component {
 
 	handleSubmit = users => {
 		// Tilføjer users til databasen
-		fire.collection('users').add({
-			name: users.name,
-			address: users.address,
-			email: users.email,
-			username: users.username,
-			password: users.password
-		})
+
 		firebase
 			.auth()
 			.createUserWithEmailAndPassword(users.email, users.password)
 			.then(response => {
-				console.log(response)
+				console.log(response.user.email, response.user.displayName)
+				fire
+					.collection('users')
+					.doc(response.user.uid)
+					.set({
+						name: users.name,
+						address: users.address,
+						email: users.email,
+						username: users.username,
+						password: users.password
+					})
 			})
 			.catch(function(error) {
 				// Handle Errors here.
