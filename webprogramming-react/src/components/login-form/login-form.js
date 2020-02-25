@@ -44,7 +44,7 @@ class LoginForm extends Component {
 			.auth()
 			.signInWithEmailAndPassword(email, password)
 			.then(() => {
-				this.state = this.initialState
+				this.setState(this.initialState)
 			})
 			.catch(function(error) {
 				var errorCode = error.code

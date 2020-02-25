@@ -3,7 +3,7 @@ import './App.css'
 import './components/SignUpForm/signUpStyles.css'
 import Navbar from './components/Navbar/Navbar'
 import LoginForm from './components/login-form/login-form'
-import SignUpForm from './components/SignUpForm/signUpForm'
+import SignUpForm from './components/signUpForm/signUpForm'
 
 function App() {
 	return (
