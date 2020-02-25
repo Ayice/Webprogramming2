@@ -1,6 +1,24 @@
 import React, { Component } from 'react'
-
+import fire from '../../firebase'
+import firebase from 'firebase'
 class ChatroomContainer extends Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			chatrooms: []
+		}
+
+		this.chatroomsRef = fire
+			.database()
+			.ref()
+			.child('chatrooms')
+	}
+
+	// componentDidMount() {
+	// 	this.chatroomsRef.onSna
+	// }
+
 	render() {
 		const chatrooms = [
 			{ name: 'Chatroom 1', members: [{ name: 'Sebastian' }, { name: 'Izabella' }, { name: 'Anders' }] },
