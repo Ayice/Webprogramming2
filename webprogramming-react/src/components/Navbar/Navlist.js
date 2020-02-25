@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import SignUpForm from '../Signup/SignUp'
-import LoginForm from '../login-form/login-form'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
 class Navlist extends Component {
@@ -47,34 +45,18 @@ class Navlist extends Component {
 		}
 
 		return (
-			// <ul className='list'>
-			// 	{list.map((x, index) => {
-			// 		return (
-			// 			<li key={index}>
-			// 				<Link to="/path"></Link>
-			// 			</li>
-			// 		)
-			// 	})}
-			// 	{button}
-			// </ul>
-
-			<div>
-				<nav>
-					<ul>
-						{list.map((x, index) => {
-							return (
-								<li key={index}>
-									<Link to={x.path}>{x.name}</Link>
-								</li>
-							)
-						})}
-					</ul>
-					{button}
-				</nav>
-
-				{/* A <Switch> looks through its children <Route>s and
-						renders the first one that matches the current URL. */}
-			</div>
+			<nav>
+				<ul>
+					{list.map((x, index) => {
+						return (
+							<li key={index}>
+								<Link to={x.path}>{x.name}</Link>
+							</li>
+						)
+					})}
+				</ul>
+				{button}
+			</nav>
 		)
 	}
 }
