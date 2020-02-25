@@ -12,9 +12,22 @@ class LoginForm extends Component {
 			email: '',
 			password: ''
 		}
-		this.state = this.initialState
 
-		// this.handleChange = this.handleChange.bind(this)
+		this.state = {
+			currentUser: { email: null }
+		}
+	}
+
+	componentDidMount() {
+		firebase.auth().onAuthStateChanged(
+			function(user) {
+				if (user) {
+					this.setState({ currentUser: { email: user.email } })
+				} else {
+					this.setState({ currentUser: { email: null } })
+				}
+			}.bind(this)
+		)
 	}
 
 	handleChange = event => {
@@ -24,73 +37,67 @@ class LoginForm extends Component {
 		})
 	}
 
-	login = event => {
+	handleLogin = event => {
 		event.preventDefault()
-		console.log(event)
+		const { email, password } = this.state
 		firebase
 			.auth()
-			.signInWithEmailAndPassword(this.state.email, this.state.password)
-			.then(console.log('test'))
-			.catch(error => {
-				// Handle Errors here.
+			.signInWithEmailAndPassword(email, password)
+			.then(() => {
+				this.setState(this.initialState)
+			})
+			.catch(function(error) {
 				var errorCode = error.code
 				var errorMessage = error.message
-				console.log(errorCode)
-				console.log('test')
-				console.log(errorMessage)
-				// ...
+				console.log(errorCode, errorMessage)
 			})
 	}
 
-	logOut = event => {}
-
-	// login = event => {
-	// 	event.preventDefault()
-
-	// 	// Tjekker om vores inputs er tomme
-	// 	if (this.state.password === '' || this.state.username === '') {
-	// 		// Hvis de er sender vi en alert om at der skal være noget data, og returner, så vi ikke "kører" videre
-	// 		return alert('You need to enter something')
-	// 	} else {
-	// 		// Hvis vi har data kalder vi vores props, som vi har fået fra App component, med den sender vi this.state
-	// 		// Her er vores inputs forskellige data.
-	// 		this.props.handleSubmit(this.state)
-	// 		// Her bruger vi initialState til at "tømme" de forskellige inputs.
-	// 		this.setState(this.initialState)
-	// 	}
-	// }
+	handleLogOut = () => {
+		firebase
+			.auth()
+			.signOut()
+			.then(
+				this.setState({
+					currentUser: { email: null }
+				})
+			)
+	}
 
 	render() {
-		let user = firebase.auth().currentUser
-		if (user) {
-			console.log(user)
-		}
-		if (user) {
-			console.log('cyka')
+		const { currentUser } = this.state
+		let greeting
+
+		if (this.state.currentUser.email != null) {
+			greeting = <h2>hi {currentUser.email}</h2>
 		} else {
-			console.log('Blyat')
+			greeting = null
 		}
 
 		return (
 			<div id='login-section'>
-				<form onSubmit={this.login}>
-					<div>
-						<input type='text' name='username' id='username' placeholder='Username' onChange={this.handleChange} />
-					</div>
+				<h1>Login to this mega awesome chat app</h1>
+				<div id='login-form'>
+					<form onSubmit={this.handleLogin}>
+						<div>
+							<input type='email' name='email' id='email' placeholder='E-mail' onChange={this.handleChange} />
+						</div>
 
-					<div>
-						<input type='text' name='password' id='password' placeholder='Password' onChange={this.handleChange} />
-					</div>
+						<div>
+							<input type='password' name='password' id='password' placeholder='Password' onChange={this.handleChange} />
+						</div>
 
-					<button type='submit' value='Submit'>
-						Login
-					</button>
-				</form>
-				<h5>
-					Not a user? Sign up <a href='{signup}'>here</a>
-				</h5>
+						<button type='submit' value='Submit'>
+							Login
+						</button>
+					</form>
+					<h5>
+						Not a user? Sign up <a href='#ffds'>here</a>
+					</h5>
+					<button onClick={this.handleLogOut}>Log Out</button>
+				</div>
 
-				<button onClick={this.logOut}>Log out</button>
+				{greeting}
 			</div>
 		)
 	}
