@@ -53,38 +53,39 @@ export default class SignUpForm extends Component {
 		return (
 			<div>
 				<form
+					className="signupform"
 					onSubmit={e => {
 						e.preventDefault()
 						this.handleSubmit(this.state)
 					}}
 				>
 					<div>
-						<h1>Sign up, my dude</h1>
+						<h1 className="signuph1">Sign up, my dude</h1>
 					</div>
 
-					<fieldset>
+					<fieldset className="signupfieldset">
 						<div>
 							{/* Value = name/time i state dette er for at vi kan tømme inputs senere */}
-							<input type='text' name='name' id='name' value={name} placeholder='Enter name here' onChange={this.handleChange} />
+							<input type='text' name='name' id='name' value={name} placeholder='Enter name here' onChange={this.handleChange} className="inputContainer"/>
 						</div>
 
 						<div>
-							<input type='text' name='address' id='address' value={address} placeholder='Enter your address here' onChange={this.handleChange} />
+							<input type='text' name='address' id='address' value={address} placeholder='Enter your address here' onChange={this.handleChange} className="inputContainer"/>
 						</div>
 
 						<div>
-							<input type='text' name='email' id='email' value={email} placeholder='Enter a valid e-mail here' onChange={this.handleChange} />
+							<input type='text' name='email' id='email' value={email} placeholder='Enter a valid e-mail here' onChange={this.handleChange} className="inputContainer"/>
 						</div>
 
 						<div>
-							<input type='text' name='username' id='username' value={username} placeholder='Enter a valid username' onChange={this.handleChange} />
+							<input type='text' name='username' id='username' value={username} placeholder='Enter a valid username' onChange={this.handleChange} className="inputContainer"/>
 						</div>
 
 						<div>
-							<input type='password' name='password' id='password' value={password} placeholder='Enter a valid password' onChange={this.handleChange} />
+							<input type='password' name='password' id='password' value={password} placeholder='Enter a valid password' onChange={this.handleChange} className="inputContainer"/>
 						</div>
 						<div>
-							<button type='submit' value='Submit'>
+							<button type='submit' value='Submit'className="signupButton">
 								Submit
 							</button>
 						</div>
