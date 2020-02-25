@@ -1,4 +1,4 @@
-form {
+.signupform {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -7,7 +7,7 @@ form {
 	margin: 2.5% auto;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
-fieldset {
+.signupfieldset {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -24,12 +24,12 @@ fieldset div {
 	justify-content: center;
 	padding: 1% 0;
 }
-div h1 {
+.signuph1 {
 	font-size: 3.5em;
 	margin: 7.5% 0 0 0;
 	color: white;
 }
-fieldset div input {
+.inputContainer {
 	width: 90%;
 	height: 50px;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -38,7 +38,7 @@ fieldset div input {
 	font-size: 1em;
 	font-weight: 600;
 }
-button {
+.signupButton {
 	width: 250px;
 	height: 40px;
 	background-color: #016379;
