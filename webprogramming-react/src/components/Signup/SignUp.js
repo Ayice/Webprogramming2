@@ -28,20 +28,28 @@ export default class SignUpForm extends Component {
 
 	handleSubmit = users => {
 		// Tilføjer users til databasen
-		fire.collection('users').add({
-			name: users.name,
-			address: users.address,
-			email: users.email,
-			username: users.username,
-			password: users.password
-		})
+
 		firebase
 			.auth()
 			.createUserWithEmailAndPassword(users.email, users.password)
+			.then(response => {
+				console.log(response.user.email, response.user.displayName)
+				fire
+					.collection('users')
+					.doc(response.user.uid)
+					.set({
+						name: users.name,
+						address: users.address,
+						email: users.email,
+						username: users.username,
+						password: users.password
+					})
+			})
 			.catch(function(error) {
 				// Handle Errors here.
 				var errorCode = error.code
 				var errorMessage = error.message
+				console.log(errorCode, errorMessage)
 				// ...
 			})
 		console.log('test')
@@ -53,39 +61,39 @@ export default class SignUpForm extends Component {
 		return (
 			<div>
 				<form
-					className="signupform"
+					className='signupform'
 					onSubmit={e => {
 						e.preventDefault()
 						this.handleSubmit(this.state)
 					}}
 				>
 					<div>
-						<h1 className="signuph1">Sign up, my dude</h1>
+						<h1 className='signuph1'>Sign up, my dude</h1>
 					</div>
 
-					<fieldset className="signupfieldset">
+					<fieldset className='signupfieldset'>
 						<div>
 							{/* Value = name/time i state dette er for at vi kan tømme inputs senere */}
-							<input type='text' name='name' id='name' value={name} placeholder='Enter name here' onChange={this.handleChange} className="inputContainer"/>
+							<input type='text' name='name' id='name' value={name} placeholder='Enter name here' onChange={this.handleChange} className='inputContainer' />
 						</div>
 
 						<div>
-							<input type='text' name='address' id='address' value={address} placeholder='Enter your address here' onChange={this.handleChange} className="inputContainer"/>
+							<input type='text' name='address' id='address' value={address} placeholder='Enter your address here' onChange={this.handleChange} className='inputContainer' />
 						</div>
 
 						<div>
-							<input type='text' name='email' id='email' value={email} placeholder='Enter a valid e-mail here' onChange={this.handleChange} className="inputContainer"/>
+							<input type='text' name='email' id='email' value={email} placeholder='Enter a valid e-mail here' onChange={this.handleChange} className='inputContainer' />
 						</div>
 
 						<div>
-							<input type='text' name='username' id='username' value={username} placeholder='Enter a valid username' onChange={this.handleChange} className="inputContainer"/>
+							<input type='text' name='username' id='username' value={username} placeholder='Enter a valid username' onChange={this.handleChange} className='inputContainer' />
 						</div>
 
 						<div>
-							<input type='password' name='password' id='password' value={password} placeholder='Enter a valid password' onChange={this.handleChange} className="inputContainer"/>
+							<input type='password' name='password' id='password' value={password} placeholder='Enter a valid password' onChange={this.handleChange} className='inputContainer' />
 						</div>
 						<div>
-							<button type='submit' value='Submit'className="signupButton">
+							<button type='submit' value='Submit' className='signupButton'>
 								Submit
 							</button>
 						</div>
