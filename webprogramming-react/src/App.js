@@ -27,7 +27,7 @@ class App extends Component {
 						.doc(user.uid)
 						.get()
 						.then(doc => {
-							this.setState({ currentUser: { ...doc.data() } })
+							this.setState({ currentUser: { ...doc.data(), id: doc.id } })
 						})
 				} else {
 					this.setState({ currentUser: {} })
@@ -43,7 +43,7 @@ class App extends Component {
 					<Navbar currentUser={this.state.currentUser} />
 					<Switch>
 						<Route path='/chat'>
-							<ChatroomContainer />
+							<ChatroomContainer currentUser={this.state.currentUser} />
 						</Route>
 
 						<Route path='/signup'>
