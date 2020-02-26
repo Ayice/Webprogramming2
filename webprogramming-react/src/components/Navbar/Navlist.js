@@ -20,15 +20,11 @@ class Navlist extends Component {
 				{ name: 'Chatrooms', path: '/chat' },
 				{ name: 'Profile', path: '/profile' }
 			]
-
-			button = <button onClick={this.handleLogout}>Log out</button>
 		} else {
 			list = [
 				{ name: 'Home', path: '/' },
 				{ name: 'Sign Up', path: '/signup' }
 			]
-
-			button = <button onClick={this.handleLogIn}>Log in</button>
 		}
 
 		return (
@@ -42,7 +38,6 @@ class Navlist extends Component {
 						)
 					})}
 				</ul>
-				{button}
 			</nav>
 		)
 	}
