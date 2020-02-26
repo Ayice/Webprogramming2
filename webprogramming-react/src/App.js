@@ -28,7 +28,6 @@ class App extends Component {
 						.doc(user.uid)
 						.get()
 						.then(doc => {
-							console.log(doc)
 							this.setState({ currentUser: { ...doc.data(), id: doc.id } })
 						})
 				} else {
