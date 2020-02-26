@@ -69,7 +69,6 @@ class ChatroomContainer extends Component {
 			})
 			.catch(err => {
 				this.setState({
-					chatrooms: [],
 					errorMsg: true
 				})
 			})
@@ -100,7 +99,15 @@ class ChatroomContainer extends Component {
 								<div className='chatroom' key={element.id}>
 									<p>{element.name}</p>
 									<br />
-									<p>{}</p>
+
+									{Array.isArray(element.members) ? (
+										element.members.map((x, index) => {
+											console.log(index)
+											return <p key={index}> {x} </p>
+										})
+									) : (
+										<p>nothing here</p>
+									)}
 								</div>
 							)
 						})}
