@@ -27,6 +27,7 @@ class ChatroomContainer extends Component {
 	getChatrooms(nextProps) {
 		let chatrooms = []
 		let chatRoomIds = []
+		let members = []
 		fire
 			.collection('user-rooms')
 			.doc(nextProps.currentUser.id)
@@ -41,9 +42,13 @@ class ChatroomContainer extends Component {
 						.doc(element)
 						.get()
 						.then(fetchedRooms => {
-							// console.log(fetchedRooms.data())
-							chatrooms.push(fetchedRooms.data())
-							// console.log(chatrooms)
+							if (fetchedRooms.data().members) {
+								fetchedRooms.data().members.forEach(element => {
+									element.get().then(doc => members.push(doc.data().name))
+								})
+							}
+							chatrooms.push(fetchedRooms.data(), ...members)
+							console.log(chatrooms)
 							this.setState({
 								chatrooms: chatrooms
 							})
@@ -65,6 +70,7 @@ class ChatroomContainer extends Component {
 						return (
 							<div className='chatroom' key={x.name}>
 								<p>{x.name}</p>
+								{x.members && <p>{x.members[0].name}</p>}
 							</div>
 						)
 					})}
