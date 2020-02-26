@@ -47,18 +47,6 @@ class Navlist extends Component {
 		}
 
 		return (
-			// <ul className='list'>
-			// 	{list.map((x, index) => {
-			// 		return (
-			// 			<li key={index}>
-			// 				<Link to="/path"></Link>
-			// 			</li>
-			// 		)
-			// 	})}
-			// 	{button}
-			// </ul>
-
-			<div>
 				<nav>
 					<ul>
 						{list.map((x, index) => {
@@ -71,10 +59,6 @@ class Navlist extends Component {
 					</ul>
 					{button}
 				</nav>
-
-				{/* A <Switch> looks through its children <Route>s and
-						renders the first one that matches the current URL. */}
-			</div>
 		)
 	}
 }
