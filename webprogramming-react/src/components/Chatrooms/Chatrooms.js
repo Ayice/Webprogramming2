@@ -56,11 +56,14 @@ class ChatroomContainer extends Component {
 		const { chatrooms } = this.state
 		return (
 			<div className='chatroom-container'>
-				<h2 className='chatroom-title'>Pick a Chatroom</h2>
-				<div>
+				<div className='chatroom-title-container'>
+					<h2 className='chatroom-title'>Hi {this.props.currentUser.username} !</h2>
+					<p>These are the chatrooms you are a part of: </p>
+				</div>
+				<div className='chatrooms'>
 					{chatrooms.map(x => {
 						return (
-							<div className='chatroom' key={x}>
+							<div className='chatroom' key={x.name}>
 								<p>{x.name}</p>
 							</div>
 						)
