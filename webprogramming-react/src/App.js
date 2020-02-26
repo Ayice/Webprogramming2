@@ -8,6 +8,7 @@ import Chat from './components/Chat/Chat'
 import fire from './firebase'
 import firebase from 'firebase'
 import ChatroomContainer from './components/Chatrooms/Chatrooms'
+import Dashboard from './components/Dashboard/Dashboard'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 class App extends Component {
@@ -51,10 +52,15 @@ class App extends Component {
 							<SignUpForm />
 						</Route>
 
+						<Route path='/dashboard'>
+							<Dashboard />
+						</Route>
+
 						<Route path='/'>
 							<LoginForm />
 							{/* < Chat /> */}
 						</Route>
+
 					</Switch>
 				</Router>
 			</div>

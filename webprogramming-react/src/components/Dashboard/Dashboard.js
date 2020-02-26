@@ -1,41 +1,35 @@
 import React, { Component } from 'react'
-import firebase from 'firebase'
-import fire from '../../firebase'
-import { BrowserRouter as Router, Link } from 'react-router-dom'
-
-import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import './Dashboard.css'
 
 class Dashboard extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-                 
+            links: [
+                { name: 'Contacts', path: '/contacts' },
+				{ name: 'Chatrooms', path: '/chatrooms' },
+                { name: 'Profile', path: '/profile' },
+                { name: 'Chat', path: '/chat'}
+            ]
         }
     }
 
     render() {
+        let links = this.state.links
+
         return (
-            <div>
+            <div className="dashboard-container">
                 <ul className="dashboard-list">
-
-                    <li className="dashboard-list-item">
-                        <a><Link to='/profile'>Profile</Link>Profile</a>
-                    </li>
-
-                    <li className="dashboard-list-item">
-                        <a><Link to='/chatrooms'>Chatrooms</Link></a>
-                    </li>
-
-                    <li className="dashboard-list-item">
-                        <a><Link to='/contacts'>Contacts</Link></a>
-                    </li>
-
-                    <li className="dashboard-list-item">
-                        <a><Link to='/chatrooms'>Most recent chatroom</Link></a> //plus path til seneste chatroom. Ikke sikkert vi kan få det til at virke
-                    </li>
-                    <Link to='/signup'>here</Link>
-                </ul>
+					{links.map((x, index) => {
+						return (
+							<li key={index} className="dashboard-list-items">
+								<Link to={x.path}>{x.name}</Link>
+							</li>
+						)
+					})}
+				</ul>
             </div>
         )
     }
