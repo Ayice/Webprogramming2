@@ -8,35 +8,58 @@ class ChatroomContainer extends Component {
 		this.state = {
 			chatrooms: []
 		}
-
-		// this.chatroomsRef = fire
-		// 	.database()
-		// 	.ref()
-		// 	.child('chatrooms')
 	}
 
-	// componentDidMount() {
-	// 	this.chatroomsRef.onSna
-	// }
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.currentUser != this.props.currentUser) {
+			this.getChatrooms(nextProps)
+		}
+	}
+
+	componentDidMount() {
+		this.getChatrooms(this.props)
+	}
+
+	getChatrooms(nextProps) {
+		let chatrooms = []
+		let chatRoomIds = []
+		fire
+			.collection('user-rooms')
+			.doc(nextProps.currentUser.id)
+			.get()
+			.then(doc => {
+				chatRoomIds = Object.keys(doc.data())
+			})
+			.then(ids => {
+				chatRoomIds.forEach(element => {
+					fire
+						.collection('chatrooms')
+						.doc(element)
+						.get()
+						.then(fetchedRooms => {
+							// console.log(fetchedRooms.data())
+							chatrooms.push(fetchedRooms.data())
+							// console.log(chatrooms)
+							this.setState({
+								chatrooms: chatrooms
+							})
+						})
+				})
+			})
+	}
 
 	render() {
-		const chatrooms = [
-			{ name: 'Chatroom 1', members: [{ name: 'Sebastian' }, { name: 'Izabella' }, { name: 'Anders' }] },
-			{ name: 'Chatroom 2', members: [{ name: 'Sebastian' }, { name: 'Izabella' }, { name: 'Anders' }] }
-		]
+		const { chatrooms } = this.state
 		return (
 			<div>
 				<h2>Pick a Chatroom</h2>
 				<div>
 					{chatrooms.map(x => {
 						return (
-							<div>
+							<div key={x}>
 								<p>{x.name}</p>
 								<ul>
 									<span>Members:</span>
-									{x.members.map(member => {
-										return <li>{member.name}</li>
-									})}
 								</ul>
 							</div>
 						)
