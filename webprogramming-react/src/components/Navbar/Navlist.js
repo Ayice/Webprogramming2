@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 class Navlist extends Component {
 	constructor(props) {
@@ -13,7 +13,6 @@ class Navlist extends Component {
 	render() {
 		const isLoggedIn = this.props.isLoggedIn
 		let list = this.state.navList
-		let button
 		if (isLoggedIn) {
 			list = [
 				{ name: 'Home', path: '/' },

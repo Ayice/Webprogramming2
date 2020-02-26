@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import fire from '../../firebase'
-import firebase from 'firebase'
+// import firebase from 'firebase'
 
 import './Chatrooms.css'
 class ChatroomContainer extends Component {
@@ -8,12 +8,13 @@ class ChatroomContainer extends Component {
 		super(props)
 
 		this.state = {
-			chatrooms: []
+			chatrooms: [],
+			errorMsg: false
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.currentUser != this.props.currentUser) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		if (nextProps.currentUser !== this.props.currentUser) {
 			this.getChatrooms(nextProps)
 		}
 	}
@@ -42,13 +43,15 @@ class ChatroomContainer extends Component {
 						.doc(chatroomId)
 						.get()
 						.then(chatRoomData => {
-							let data = chatRoomData.data()
+							let data = { id: chatRoomData.id, ...chatRoomData.data() }
 
 							if (data.members.length > 0) {
+								// console.log(data)
 								data.members.forEach(element => {
+									members = []
 									element.get().then(doc => {
 										// console.log(doc.data())
-										members.push(doc.data().name)
+										members.push({ name: doc.data().name })
 									})
 								})
 								data.members = members
@@ -58,38 +61,53 @@ class ChatroomContainer extends Component {
 								// console.log(data)
 								chatrooms.push({ ...data })
 							}
-
 							this.setState({
 								chatrooms: chatrooms
 							})
 						})
 				})
 			})
+			.catch(err => {
+				this.setState({
+					chatrooms: [],
+					errorMsg: true
+				})
+			})
 	}
 
 	render() {
-		const { chatrooms } = this.state
+		const { chatrooms, errorMsg } = this.state
 
-		// console.log(chatrooms.members, 'renders')
-		return (
-			<div className='chatroom-container'>
-				<div className='chatroom-title-container'>
-					<h2 className='chatroom-title'>Hi {this.props.currentUser.username} !</h2>
-					<p>These are the chatrooms you are a part of: </p>
+		if (errorMsg) {
+			return (
+				<div className='chatroom-container'>
+					<div className='chatroom-title-container'>
+						<h2 className='chatroom-title'>Hi {this.props.currentUser.username} !</h2>
+						<p>You are not a member in any chatroom </p>
+					</div>
 				</div>
-				<div className='chatrooms'>
-					{chatrooms.map(x => {
-						return (
-							<div className='chatroom' key={x.name}>
-								<p>{x.name}</p>
-								<br />
-								<p></p>
-							</div>
-						)
-					})}
+			)
+		} else {
+			return (
+				<div className='chatroom-container'>
+					<div className='chatroom-title-container'>
+						<h2 className='chatroom-title'>Hi {this.props.currentUser.username} !</h2>
+						<p>These are the chatrooms you are a part of: </p>
+					</div>
+					<div className='chatrooms'>
+						{chatrooms.map(element => {
+							return (
+								<div className='chatroom' key={element.id}>
+									<p>{element.name}</p>
+									<br />
+									<p>{}</p>
+								</div>
+							)
+						})}
+					</div>
 				</div>
-			</div>
-		)
+			)
+		}
 	}
 }
 export default ChatroomContainer
