@@ -100,7 +100,7 @@ class ChatroomContainer extends Component {
 								<div className='chatroom' key={element.id}>
 									<p>{element.name}</p>
 									<br />
-									<p>{}</p>
+									<p>{element.members.length > 0 ? 'hejsa' : 'farvel'}</p>
 								</div>
 							)
 						})}
