@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import './login-form.css'
+import './Login.css'
 import fire from '../../firebase'
 import firebase from 'firebase'
 import 'firebase/auth'
-import { BrowserRouter as Router, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 class LoginForm extends Component {
 	constructor(props) {
