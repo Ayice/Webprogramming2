@@ -17,7 +17,9 @@ class ChatroomContainer extends Component {
 	}
 
 	componentDidMount() {
-		this.getChatrooms(this.props)
+		if (this.props.currentUser.email) {
+			this.getChatrooms(this.props)
+		}
 	}
 
 	getChatrooms(nextProps) {
