@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import './App.css'
 import './components/Signup/SignUp.css'
 import Navbar from './components/Navbar/Navbar'
-import LoginForm from './components/login-form/login-form'
+import LoginForm from './components/Login/Login'
 import SignUpForm from './components/Signup/SignUp'
+import Chat from './components/Chat/Chat'
 import fire from './firebase'
 import firebase from 'firebase'
 import ChatroomContainer from './components/Chatrooms/Chatrooms'
@@ -53,6 +54,7 @@ class App extends Component {
 
 						<Route path='/'>
 							<LoginForm />
+							{/* < Chat /> */}
 						</Route>
 					</Switch>
 				</Router>
