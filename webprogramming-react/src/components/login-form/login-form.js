@@ -3,12 +3,7 @@ import './login-form.css'
 import fire from '../../firebase'
 import firebase from 'firebase'
 import 'firebase/auth'
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	Link
-  } from "react-router-dom";
+import { BrowserRouter as Router, Link } from 'react-router-dom'
 
 class LoginForm extends Component {
 	constructor(props) {
@@ -20,20 +15,8 @@ class LoginForm extends Component {
 		}
 
 		this.state = {
-			currentUser: { email: null }
+			currentUser: {}
 		}
-	}
-
-	componentDidMount() {
-		firebase.auth().onAuthStateChanged(
-			function(user) {
-				if (user) {
-					this.setState({ currentUser: { email: user.email } })
-				} else {
-					this.setState({ currentUser: { email: null } })
-				}
-			}.bind(this)
-		)
 	}
 
 	handleChange = event => {
@@ -98,7 +81,7 @@ class LoginForm extends Component {
 						</button>
 					</form>
 					<h5>
-						Not a user? Sign up <Link to="/signup">here</Link>
+						Not a user? Sign up <Link to='/signup'>here</Link>
 					</h5>
 					<button onClick={this.handleLogOut}>Log Out</button>
 				</div>

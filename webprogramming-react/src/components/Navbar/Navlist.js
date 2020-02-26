@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import SignUpForm from '../Signup/SignUp'
-import LoginForm from '../login-form/login-form'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
 class Navlist extends Component {
@@ -8,25 +6,12 @@ class Navlist extends Component {
 		super(props)
 
 		this.state = {
-			isLoggedIn: false,
 			navList: []
 		}
 	}
 
-	handleLogout = () => {
-		this.setState({
-			isLoggedIn: false
-		})
-	}
-
-	handleLogIn = () => {
-		this.setState({
-			isLoggedIn: true
-		})
-	}
-
 	render() {
-		const isLoggedIn = this.state.isLoggedIn
+		const isLoggedIn = this.props.isLoggedIn
 		let list = this.state.navList
 		let button
 		if (isLoggedIn) {
@@ -35,30 +20,25 @@ class Navlist extends Component {
 				{ name: 'Chatrooms', path: '/chat' },
 				{ name: 'Profile', path: '/profile' }
 			]
-
-			button = <button onClick={this.handleLogout}>Log out</button>
 		} else {
 			list = [
 				{ name: 'Home', path: '/' },
 				{ name: 'Sign Up', path: '/signup' }
 			]
-
-			button = <button onClick={this.handleLogIn}>Log in</button>
 		}
 
 		return (
-				<nav>
-					<ul>
-						{list.map((x, index) => {
-							return (
-								<li key={index}>
-									<Link to={x.path}>{x.name}</Link>
-								</li>
-							)
-						})}
-					</ul>
-					{button}
-				</nav>
+			<nav>
+				<ul>
+					{list.map((x, index) => {
+						return (
+							<li key={index}>
+								<Link to={x.path}>{x.name}</Link>
+							</li>
+						)
+					})}
+				</ul>
+			</nav>
 		)
 	}
 }
