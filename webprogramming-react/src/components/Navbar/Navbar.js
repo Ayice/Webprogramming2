@@ -9,8 +9,6 @@ class Navbar extends Component {
 		this.initialState = {
 			isLoggedIn: false
 		}
-
-		console.log(props)
 	}
 
 	render() {
