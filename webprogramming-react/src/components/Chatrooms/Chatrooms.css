@@ -1,0 +1,39 @@
+.chatroom-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 3em;
+}
+
+.chatroom-title {
+	width: 100%;
+}
+
+.chatroom {
+	width: 300px;
+	height: 200px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	box-shadow: 3px 4px 10px rgb(243, 243, 243);
+	transition: all 0.3s ease;
+}
+
+.chatroom p {
+	font-size: 1.5em;
+	text-transform: capitalize;
+	font-weight: 700;
+	opacity: 0.8;
+	transition: all 0.3s ease;
+}
+
+.chatroom:hover {
+	background-color: rgb(243, 242, 242);
+	box-shadow: 1px 2px 8px rgb(243, 243, 243);
+}
+
+.chatroom:hover p {
+	transform: scale(1.05);
+	opacity: 1;
+}

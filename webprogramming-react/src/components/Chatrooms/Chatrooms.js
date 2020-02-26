@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import fire from '../../firebase'
 import firebase from 'firebase'
+
+import './Chatrooms.css'
 class ChatroomContainer extends Component {
 	constructor(props) {
 		super(props)
@@ -53,16 +55,13 @@ class ChatroomContainer extends Component {
 	render() {
 		const { chatrooms } = this.state
 		return (
-			<div>
-				<h2>Pick a Chatroom</h2>
+			<div className='chatroom-container'>
+				<h2 className='chatroom-title'>Pick a Chatroom</h2>
 				<div>
 					{chatrooms.map(x => {
 						return (
-							<div key={x}>
+							<div className='chatroom' key={x}>
 								<p>{x.name}</p>
-								<ul>
-									<span>Members:</span>
-								</ul>
 							</div>
 						)
 					})}
