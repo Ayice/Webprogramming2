@@ -36,19 +36,29 @@ class ChatroomContainer extends Component {
 				chatRoomIds = Object.keys(doc.data())
 			})
 			.then(ids => {
-				chatRoomIds.forEach(element => {
+				chatRoomIds.forEach(chatroomId => {
 					fire
 						.collection('chatrooms')
-						.doc(element)
+						.doc(chatroomId)
 						.get()
-						.then(fetchedRooms => {
-							if (fetchedRooms.data().members) {
-								fetchedRooms.data().members.forEach(element => {
-									element.get().then(doc => members.push(doc.data().name))
+						.then(chatRoomData => {
+							let data = chatRoomData.data()
+
+							if (data.members.length > 0) {
+								data.members.forEach(element => {
+									element.get().then(doc => {
+										// console.log(doc.data())
+										members.push(doc.data().name)
+									})
 								})
+								data.members = members
+								chatrooms.push({ ...data })
+								// console.log(chatrooms)
+							} else {
+								// console.log(data)
+								chatrooms.push({ ...data })
 							}
-							chatrooms.push(fetchedRooms.data(), ...members)
-							console.log(chatrooms)
+
 							this.setState({
 								chatrooms: chatrooms
 							})
@@ -59,6 +69,8 @@ class ChatroomContainer extends Component {
 
 	render() {
 		const { chatrooms } = this.state
+
+		// console.log(chatrooms.members, 'renders')
 		return (
 			<div className='chatroom-container'>
 				<div className='chatroom-title-container'>
@@ -70,7 +82,8 @@ class ChatroomContainer extends Component {
 						return (
 							<div className='chatroom' key={x.name}>
 								<p>{x.name}</p>
-								{x.members && <p>{x.members[0].name}</p>}
+								<br />
+								<p></p>
 							</div>
 						)
 					})}
