@@ -1,38 +1,95 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import './Dashboard.css'
+import DashboardTile from './Dashboard-tiles'
+import fire from '../../firebase'
 
 class Dashboard extends Component {
-    constructor(props) {
-        super(props)
+	// We need this, so our component won't update the state when it's not mounted
+	_isMounted = false
+	constructor(props) {
+		super(props)
 
-        this.state = {
-            links: [
-                { name: 'Contacts', path: '/contacts' },
-				{ name: 'Chatrooms', path: '/chatrooms' },
-                { name: 'Profile', path: '/profile' },
-                { name: 'Chat', path: '/chat'}
-            ]
-        }
-    }
+		this.state = {
+			links: [
+				{ name: 'Contacts', path: '/contacts', prop: this.props.currentUser },
+				{ name: 'Chatrooms', path: '/chatrooms', prop: [] },
+				{ name: 'Profile', path: '/profile', prop: [] },
+				{ name: 'Chat', path: '/chat', prop: [] }
+			],
+			friends: [],
+			errorMsg: false
+		}
+	}
+	componentDidMount() {
+		this._isMounted = true
 
-    render() {
-        let links = this.state.links
+		if (this.props.currentUser.id) {
+			this.fetchFriends()
+		}
+	}
 
-        return (
-            <div className="dashboard-container">
-                <ul className="dashboard-list">
-					{links.map((x, index) => {
-						return (
-							<li key={index} className="dashboard-list-items">
-								<Link to={x.path}>{x.name}</Link>
-							</li>
-						)
-					})}
-				</ul>
-            </div>
-        )
-    }
+	// componentDidUpdate() {
+	// 	this.fetchFriends()
+	// }
+
+	componentWillUnmount() {
+		this._isMounted = false
+	}
+
+	fetchFriends() {
+		let friendId = []
+		fire
+			.collection('user-user')
+			.doc(this.props.currentUser.id)
+			.get()
+			.then(doc => {
+				if (doc.data() === undefined) {
+					throw Error
+				}
+				friendId = Object.keys(doc.data())
+			})
+			.then(() => {
+				friendId.forEach(element => {
+					fire
+						.collection('users')
+						.doc(element)
+						.get()
+						.then(friendData => {
+							friendId = [friendData.data()]
+						})
+
+						.then(() => {
+							if (this._isMounted) {
+								this.setState({
+									friends: friendId
+								})
+							}
+						})
+				})
+			})
+			.catch(err => {
+				this.setState({
+					errorMsg: true
+				})
+			})
+	}
+
+	render() {
+		const { links, friends, errorMsg } = this.state
+
+		return (
+			<div className='dashboard-container'>
+				<div className='dashboard-list'>
+					{links.map((link, index) => (
+						<Link key={index} to={link.path} className='dashboard-list-items'>
+							<DashboardTile specialProp={link.prop} title={link.name} />
+						</Link>
+					))}
+				</div>
+			</div>
+		)
+	}
 }
 
 export default Dashboard
