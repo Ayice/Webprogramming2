@@ -44,7 +44,8 @@ class App extends Component {
 				<Router>
 					<Navbar currentUser={this.state.currentUser} />
 					<Switch>
-						<Route path='/chatrooms' render={props => <ChatroomContainer {...props} currentUser={this.state.currentUser} />} />
+						<Route path='/chatrooms' exact render={props => <ChatroomContainer {...props} currentUser={this.state.currentUser} />} />
+						<Route path='/chatrooms/chat/:id' exact component={Chat} />
 						<Route path='/signup' component={SignUpForm} />
 						<Route path='/' exact component={LoginForm} />
 						<Route path='/dashboard' exact component={Dashboard} />
