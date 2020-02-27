@@ -8,6 +8,7 @@ import Chat from './components/Chat/Chat'
 import fire from './firebase'
 import firebase from 'firebase'
 import ChatroomContainer from './components/Chatrooms/Chatrooms'
+import Dashboard from './components/Dashboard/Dashboard'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 class App extends Component {
@@ -43,18 +44,11 @@ class App extends Component {
 				<Router>
 					<Navbar currentUser={this.state.currentUser} />
 					<Switch>
-						<Route path='/chat'>
-							<ChatroomContainer currentUser={this.state.currentUser} />
-						</Route>
-
-						<Route path='/signup'>
-							<SignUpForm />
-						</Route>
-
-						<Route path='/'>
-							<LoginForm />
-							{/* < Chat /> */}
-						</Route>
+						<Route path='/chatrooms' render={props => <ChatroomContainer {...props} currentUser={this.state.currentUser} />} />
+						<Route path='/signup' component={SignUpForm} />
+						<Route path='/' exact component={LoginForm} />
+						<Route path='/dashboard' exact component={Dashboard} />
+						{/* < Chat /> */}
 					</Switch>
 				</Router>
 			</div>
