@@ -42,17 +42,6 @@ class LoginForm extends Component {
 			})
 	}
 
-	handleLogOut = () => {
-		firebase
-			.auth()
-			.signOut()
-			.then(
-				this.setState({
-					currentUser: { email: null }
-				})
-			)
-	}
-
 	render() {
 		const { currentUser } = this.state
 		let greeting

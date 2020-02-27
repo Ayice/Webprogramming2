@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import firebase from 'firebase'
 
 class Navlist extends Component {
 	constructor(props) {
@@ -10,9 +11,21 @@ class Navlist extends Component {
 		}
 	}
 
+	handleLogOut = () => {
+		firebase
+			.auth()
+			.signOut()
+			.then(
+				this.setState({
+					currentUser: { email: null }
+				})
+			)
+	}
+
 	render() {
 		const isLoggedIn = this.props.isLoggedIn
 		let list = this.state.navList
+		let button;
 		if (isLoggedIn) {
 			list = [
 				{ name: 'Home', path: '/' },
@@ -20,11 +33,13 @@ class Navlist extends Component {
 				{ name: 'Profile', path: '/profile' },
 				{ name: 'Dashboard', path: '/dashboard' }
 			]
+			button = <button onClick={this.handleLogOut}>Log Out</button>
 		} else {
 			list = [
 				{ name: 'Home', path: '/' },
 				{ name: 'Sign Up', path: '/signup' }
 			]
+			button = null
 		}
 
 		return (
@@ -37,6 +52,7 @@ class Navlist extends Component {
 							</li>
 						)
 					})}
+					{button}
 				</ul>
 			</nav>
 		)
