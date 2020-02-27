@@ -44,11 +44,11 @@ class App extends Component {
 				<Router>
 					<Navbar currentUser={this.state.currentUser} />
 					<Switch>
-						<Route path='/dashboard' exact component={Dashboard} />
-						<Route path='/chatrooms' render={props => <ChatroomContainer {...props} currentUser={this.state.currentUser} />} />
+						<Route path='/chatrooms' exact render={props => <ChatroomContainer {...props} currentUser={this.state.currentUser} />} />
+						<Route path='/chatrooms/chat/:id' exact render={props => <Chat {...props} currentUser={this.state.currentUser} />} />
 						<Route path='/signup' component={SignUpForm} />
+						<Route path='/dashboard' component={Dashboard} />
 						<Route path='/' exact component={LoginForm} />
-						{/* < Chat /> */}
 					</Switch>
 				</Router>
 			</div>

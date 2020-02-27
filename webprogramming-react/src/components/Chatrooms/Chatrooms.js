@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import fire from '../../firebase'
+import { Link } from 'react-router-dom'
 // import firebase from 'firebase'
 
 import './Chatrooms.css'
@@ -97,17 +98,14 @@ class ChatroomContainer extends Component {
 						{chatrooms.map(element => {
 							return (
 								<div className='chatroom' key={element.id}>
-									<p>{element.name}</p>
-									<br />
-
-									{Array.isArray(element.members) ? (
-										element.members.map((x, index) => {
-											console.log(index)
-											return <p key={index}> {x} </p>
-										})
-									) : (
-										<p>nothing here</p>
-									)}
+									<Link to={`chatrooms/chat/${element.id}`}>
+										<p>{element.name}</p>
+										{/* Later in the process */}
+										{/* <br />
+									{element.members.map((member, index) => (
+										<p> {member.name} </p>
+									))} */}
+									</Link>
 								</div>
 							)
 						})}

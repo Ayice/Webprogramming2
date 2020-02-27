@@ -23,14 +23,17 @@
 .message-container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 100%;
     width: 100%;
 }
 .message {
     max-width: 70%;
     padding: 10px;
+}
+
+.message:first-child {
+    margin-top: auto;
 }
 
 .message.sent {
@@ -48,7 +51,7 @@ form {
     width: 100%;
 }
 
-form input {
+form textarea {
     width: 68%;
     background:#FFFFFF;
     border: none;
@@ -60,7 +63,7 @@ form input {
     min-height: 31px;
 }
 
-form input::placeholder { 
+form textarea::placeholder { 
     font-weight: bold;
     color: #ACACAC;
     font-size: 16px;
