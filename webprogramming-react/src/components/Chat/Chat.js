@@ -55,8 +55,8 @@ class Chat extends Component {
 								</div>
 							)
 						})}
-                    <div className="message received">Received message example</div>
                     <div className="message sent">Sent message example</div>
+                    <div className="message received">Received message example</div>
 
                 </div>
                 <form onSubmit={this.sendMessage}>

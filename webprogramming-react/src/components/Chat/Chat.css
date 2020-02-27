@@ -30,6 +30,7 @@
 .message {
     max-width: 70%;
     padding: 10px;
+    margin-bottom: 2px;
 }
 
 .message:first-child {
@@ -46,7 +47,7 @@
     align-self: flex-start;
 }
 
-form {
+#chat-section form {
     margin-top: 20px;
     width: 100%;
 }

@@ -42,27 +42,7 @@ class LoginForm extends Component {
 			})
 	}
 
-	handleLogOut = () => {
-		firebase
-			.auth()
-			.signOut()
-			.then(
-				this.setState({
-					currentUser: { email: null }
-				})
-			)
-	}
-
 	render() {
-		const { currentUser } = this.state
-		let greeting
-
-		if (this.state.currentUser.email != null) {
-			greeting = <h2>hi {currentUser.email}</h2>
-		} else {
-			greeting = null
-		}
-
 		return (
 			<div id='login-section'>
 				<h1>Login to this mega awesome chat app</h1>
@@ -83,10 +63,8 @@ class LoginForm extends Component {
 					<h5>
 						Not a user? Sign up <Link to='/signup'>here</Link>
 					</h5>
-					<button onClick={this.handleLogOut}>Log Out</button>
 				</div>
 
-				{greeting}
 			</div>
 		)
 	}
