@@ -49,6 +49,7 @@ class App extends Component {
 						<Route path='/signup' component={SignUpForm} />
 						<Route path='/dashboard' component={Dashboard} />
 						<Route path='/' exact component={LoginForm} />
+						<Route path='/dashboard' exact component={Dashboard} />
 					</Switch>
 				</Router>
 			</div>
