@@ -36,6 +36,10 @@ class ChatroomContainer extends Component {
 			.get()
 			.then(doc => {
 				chatRoomIds = Object.keys(doc.data())
+				console.log(chatRoomIds)
+				if (chatRoomIds.length < 1) {
+					throw Error
+				}
 			})
 			.then(ids => {
 				chatRoomIds.forEach(chatroomId => {
@@ -57,11 +61,12 @@ class ChatroomContainer extends Component {
 								})
 								data.members = members
 								chatrooms.push({ ...data })
-								// console.log(chatrooms)
 							} else {
 								// console.log(data)
+								// console.log(chatrooms)
 								chatrooms.push({ ...data })
 							}
+
 							this.setState({
 								chatrooms: chatrooms
 							})
