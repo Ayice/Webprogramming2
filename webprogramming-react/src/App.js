@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
+import fire from './firebase'
+import firebase from 'firebase'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+
 import './App.css'
-import './components/Signup/SignUp.css'
 import Navbar from './components/Navbar/Navbar'
 import LoginForm from './components/Login/Login'
 import SignUpForm from './components/Signup/SignUp'
 import Chat from './components/Chat/Chat'
 import Profile from './components/Profile/Profile'
-import fire from './firebase'
-import firebase from 'firebase'
 import ChatroomContainer from './components/Chatrooms/Chatrooms'
 import Dashboard from './components/Dashboard/Dashboard'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Contacts from './components/Contacts/Contacts'
 
 class App extends Component {
 	constructor() {
@@ -22,21 +23,58 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		firebase.auth().onAuthStateChanged(
-			function(user) {
-				if (user) {
+		firebase.auth().onAuthStateChanged(user => {
+			if (user) {
+				fire
+					.collection('users')
+					.doc(user.uid)
+					.get()
+					.then(doc => {
+						this.setState({ currentUser: { ...doc.data(), id: doc.id } })
+					})
+					.then(() => {
+						this.fetchFriends()
+					})
+			} else {
+				this.setState({ currentUser: {} })
+			}
+		})
+	}
+
+	fetchFriends() {
+		let friendId = []
+		fire
+			.collection('user-user')
+			.doc(this.state.currentUser.id)
+			.get()
+			.then(doc => {
+				if (doc.data() === undefined) {
+					throw Error
+				}
+				friendId = Object.keys(doc.data())
+			})
+			.then(() => {
+				friendId.forEach(element => {
 					fire
 						.collection('users')
-						.doc(user.uid)
+						.doc(element)
 						.get()
-						.then(doc => {
-							this.setState({ currentUser: { ...doc.data(), id: doc.id } })
+						.then(friendData => {
+							friendId = [friendData.data()]
 						})
-				} else {
-					this.setState({ currentUser: {} })
-				}
-			}.bind(this)
-		)
+
+						.then(() => {
+							this.setState({
+								currentUser: { ...this.state.currentUser, friends: friendId }
+							})
+						})
+				})
+			})
+			.catch(err => {
+				this.setState({
+					errorMsg: true
+				})
+			})
 	}
 
 	render() {
@@ -47,11 +85,11 @@ class App extends Component {
 					<Switch>
 						<Route path='/chatrooms' exact render={props => <ChatroomContainer {...props} currentUser={this.state.currentUser} />} />
 						<Route path='/chatrooms/chat/:id' exact render={props => <Chat {...props} currentUser={this.state.currentUser} />} />
-						<Route path='/signup' component={SignUpForm} />
-						<Route path='/dashboard' render={props => <Dashboard {...props} currentUser={this.state.currentUser} />} />
-						<Route path='/' exact component={LoginForm} />
 						<Route path='/profile' exact render={props => <Profile {...props} currentUser={this.state.currentUser} />} />
-						<Route path='/dashboard' exact component={Dashboard} />
+						<Route path='/dashboard' render={props => <Dashboard {...props} currentUser={this.state.currentUser} />} />
+						<Route path='/contacts' render={props => <Contacts {...props} currentUser={this.state.currentUser} />} />
+						<Route path='/signup' component={SignUpForm} />
+						<Route path='/' exact component={LoginForm} />
 					</Switch>
 				</Router>
 			</div>

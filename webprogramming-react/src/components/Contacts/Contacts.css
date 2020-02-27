@@ -1,0 +1,59 @@
+.contacts-div {
+	display: flex;
+	width: 1080px;
+	margin: 0 auto;
+	align-items: center;
+	flex-flow: column wrap;
+}
+
+.contacts-div_contacts {
+	width: 80%;
+	display: flex;
+	justify-content: center;
+}
+
+.contact {
+	font-size: 1.2em;
+	cursor: pointer;
+	position: relative;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	padding: 1em;
+	width: 50%;
+	max-height: 95px;
+	box-shadow: 3px 5px 10px rgb(211, 211, 211);
+	overflow: hidden;
+	transition: all 0.3s ease;
+}
+
+.contact:hover {
+	transition: all 0.3s ease;
+	max-height: 300px;
+}
+.contact:hover .contact-info_hide {
+	transition: all 0.3s ease;
+	opacity: 1;
+}
+
+.contact-avatar {
+	width: 20%;
+}
+
+.contact-avatar span {
+	display: block;
+	border-radius: 100%;
+	height: 60px;
+	width: 60px;
+	box-shadow: 3px 5px 10px rgb(211, 211, 211);
+}
+
+.contact-info {
+	width: 70%;
+}
+
+.contact-info_hide {
+	transition: all 0.3s ease;
+	opacity: 0;
+	/* position: absolute; */
+}
