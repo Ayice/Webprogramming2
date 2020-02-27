@@ -48,7 +48,7 @@ class App extends Component {
 						<Route path='/chatrooms' exact render={props => <ChatroomContainer {...props} currentUser={this.state.currentUser} />} />
 						<Route path='/chatrooms/chat/:id' exact render={props => <Chat {...props} currentUser={this.state.currentUser} />} />
 						<Route path='/signup' component={SignUpForm} />
-						<Route path='/dashboard' component={Dashboard} />
+						<Route path='/dashboard' render={props => <Dashboard {...props} currentUser={this.state.currentUser} />} />
 						<Route path='/' exact component={LoginForm} />
 						<Route path='/profile' exact render={props => <Profile {...props} currentUser={this.state.currentUser} />} />
 						<Route path='/dashboard' exact component={Dashboard} />
