@@ -25,7 +25,7 @@ class Navlist extends Component {
 	render() {
 		const isLoggedIn = this.props.isLoggedIn
 		let list = this.state.navList
-		let button;
+		let button
 		if (isLoggedIn) {
 			list = [
 				{ name: 'Home', path: '/' },
@@ -43,18 +43,16 @@ class Navlist extends Component {
 		}
 
 		return (
-			<nav>
-				<ul>
-					{list.map((x, index) => {
-						return (
-							<li key={index}>
-								<Link to={x.path}>{x.name}</Link>
-							</li>
-						)
-					})}
-					{button}
-				</ul>
-			</nav>
+			<ul>
+				{list.map((x, index) => {
+					return (
+						<li key={index}>
+							<Link to={x.path}>{x.name}</Link>
+						</li>
+					)
+				})}
+				{button}
+			</ul>
 		)
 	}
 }
