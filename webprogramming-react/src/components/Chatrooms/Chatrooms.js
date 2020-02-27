@@ -100,11 +100,12 @@ class ChatroomContainer extends Component {
 								<div className='chatroom' key={element.id}>
 									<Link to={`chatrooms/chat/${element.id}`}>
 										<p>{element.name}</p>
-										{/* Later in the process */}
-										{/* <br />
+										{/* Later in the process 
+									
 									{element.members.map((member, index) => (
 										<p> {member.name} </p>
-									))} */}
+									))} 
+									*/}
 									</Link>
 								</div>
 							)
