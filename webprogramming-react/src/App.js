@@ -49,7 +49,6 @@ class App extends Component {
 						<Route path='/signup' component={SignUpForm} />
 						<Route path='/' exact component={LoginForm} />
 						<Route path='/dashboard' exact component={Dashboard} />
-						{/* < Chat /> */}
 					</Switch>
 				</Router>
 			</div>

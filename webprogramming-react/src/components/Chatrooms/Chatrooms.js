@@ -97,16 +97,16 @@ class ChatroomContainer extends Component {
 					<div className='chatrooms'>
 						{chatrooms.map(element => {
 							return (
-								<div className='chatroom' key={element.id}>
-									<Link to={`chatrooms/chat/${element.id}`}>
+								<Link key={element.id} to={`chatrooms/chat/${element.id}`}>
+									<div className='chatroom'>
 										<p>{element.name}</p>
 										{/* Later in the process */}
 										{/* <br />
 									{element.members.map((member, index) => (
 										<p> {member.name} </p>
 									))} */}
-									</Link>
-								</div>
+									</div>
+								</Link>
 							)
 						})}
 					</div>
