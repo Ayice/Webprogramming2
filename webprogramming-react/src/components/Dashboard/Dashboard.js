@@ -36,7 +36,7 @@ class Dashboard extends Component {
 	componentWillUnmount() {
 		this._isMounted = false
 	}
-
+	// TODO: Get this out to the app, so we can use it  everywhere
 	fetchFriends() {
 		let friendId = []
 		fire
