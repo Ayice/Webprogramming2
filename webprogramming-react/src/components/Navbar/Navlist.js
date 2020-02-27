@@ -16,6 +16,7 @@ class Navlist extends Component {
 		if (isLoggedIn) {
 			list = [
 				{ name: 'Home', path: '/' },
+				{ name: 'Dashboard', path: '/dashboard' },
 				{ name: 'Chatrooms', path: '/chat' },
 				{ name: 'Profile', path: '/profile' }
 			]
