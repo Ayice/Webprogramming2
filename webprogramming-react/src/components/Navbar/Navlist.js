@@ -33,7 +33,7 @@ class Navlist extends Component {
 				{ name: 'Profile', path: '/profile' },
 				{ name: 'Dashboard', path: '/dashboard' }
 			]
-			button = <button onClick={this.handleLogOut}>Log Out</button>
+			button = <a href="" onClick={this.handleLogOut}>Log Out</a>
 		} else {
 			list = [
 				{ name: 'Home', path: '/' },
@@ -43,7 +43,6 @@ class Navlist extends Component {
 		}
 
 		return (
-			<nav>
 				<ul>
 					{list.map((x, index) => {
 						return (
@@ -54,7 +53,6 @@ class Navlist extends Component {
 					})}
 					{button}
 				</ul>
-			</nav>
 		)
 	}
 }

@@ -9,6 +9,7 @@ nav ul {
 	padding: 1em;
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 	list-style: none;
 	width: 100%;
 	justify-content: flex-end;
@@ -18,9 +19,13 @@ nav ul > * {
 	margin: 0 2em;
 }
 
-nav ul li a {
+nav ul li a, nav a {
 	font-size: 1.5em;
 	color: #fff;
 	font-weight: 700;
 	text-decoration: none;
+}
+
+nav a {
+	font-size: 7px;
 }
