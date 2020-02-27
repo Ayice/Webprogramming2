@@ -17,7 +17,8 @@ class Navlist extends Component {
 			list = [
 				{ name: 'Home', path: '/' },
 				{ name: 'Chatrooms', path: '/chatrooms' },
-				{ name: 'Profile', path: '/profile' }
+				{ name: 'Profile', path: '/profile' },
+				{ name: 'Dashboard', path: '/dashboard' }
 			]
 		} else {
 			list = [
