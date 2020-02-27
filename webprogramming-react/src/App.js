@@ -5,6 +5,7 @@ import Navbar from './components/Navbar/Navbar'
 import LoginForm from './components/Login/Login'
 import SignUpForm from './components/Signup/SignUp'
 import Chat from './components/Chat/Chat'
+import Profile from './components/Profile/Profile'
 import fire from './firebase'
 import firebase from 'firebase'
 import ChatroomContainer from './components/Chatrooms/Chatrooms'
@@ -49,6 +50,7 @@ class App extends Component {
 						<Route path='/signup' component={SignUpForm} />
 						<Route path='/dashboard' component={Dashboard} />
 						<Route path='/' exact component={LoginForm} />
+						<Route path='/profile' exact render={props => <Profile {...props} currentUser={this.state.currentUser} />} />
 						<Route path='/dashboard' exact component={Dashboard} />
 					</Switch>
 				</Router>
