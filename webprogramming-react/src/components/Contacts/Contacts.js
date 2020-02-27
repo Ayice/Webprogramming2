@@ -14,25 +14,27 @@ const Contacts = props => {
 				<p>In here u can see your contacts: </p>
 			</div>
 			<div className='contacts-div_contacts'>
-				{props.currentUser.friends
-					? props.currentUser.friends.map(x => (
-							<div className='contact' key={x.username}>
-								<div className='contact-avatar'>
-									<span></span>
-								</div>
+				{props.currentUser.friends ? (
+					props.currentUser.friends.map(x => (
+						<div className='contact' key={x.username}>
+							<div className='contact-avatar'>
+								<span></span>
+							</div>
 
-								<div className='contact-info'>
-									<p>{x.name} </p>
+							<div className='contact-info'>
+								<p>{x.name} </p>
 
-									<div className='contact-info_hide'>
-										<p>{x.username} </p>
-										<p>{x.address} </p>
-										<p>{x.email} </p>
-									</div>
+								<div className='contact-info_hide'>
+									<p>{x.username} </p>
+									<p>{x.address} </p>
+									<p>{x.email} </p>
 								</div>
 							</div>
-					  ))
-					: ''}
+						</div>
+					))
+				) : (
+					<h2>Unfortunately you have no friends... YET!!! </h2>
+				)}
 			</div>
 		</div>
 	)
