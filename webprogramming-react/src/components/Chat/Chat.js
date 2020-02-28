@@ -45,10 +45,10 @@ class Chat extends Component {
 		})
 	}
 
-    sendMessage = users => {
+    sendMessage = event => {
         var date = new Date();
         var timestamp = date.getTime();
-        users.preventDefault()
+        event.preventDefault()
         fire.collection('messages').doc(this.state.currentChatroom.id).collection('messages').add({
             text: this.state.text,
             sender: this.state.currentUser.username,
