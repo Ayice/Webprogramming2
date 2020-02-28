@@ -9,14 +9,13 @@ class Chat extends Component {
     constructor(props) {
 		super(props)
 
-		this.initialState = {
+		this.state = {
             currentUser: {},
             currentChatroom: { id: props.match.params.id },
             messages: [],
             text: ''
         }
 
-        this.state = this.initialState
         this.sendMessage = this.sendMessage.bind(this)
     }
     
@@ -66,7 +65,9 @@ class Chat extends Component {
             console.error("Error sending message: ", error);
         });
         console.log(this.state.text, this.state.currentUser.username, timestamp );
-        this.setState(this.initialState)
+        this.setState({
+            text: ''
+        })
 	}
 
     render() {
