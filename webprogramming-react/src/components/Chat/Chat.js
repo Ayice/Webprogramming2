@@ -70,7 +70,7 @@ class Chat extends Component {
 	}
 
     render() {
-        const {messages} = this.state
+        const { messages, text } = this.state
         return (
             <div id="chat-section">
                 <div className="chat-header"><h2>{this.state.currentChatroom.name}</h2></div>
@@ -90,7 +90,7 @@ class Chat extends Component {
 						this.sendMessage(this.state)
 					}}
                     >
-                    <textarea name="text" placeholder="Write a message..." rows="5" onChange={this.handleChange}></textarea>
+                    <textarea name="text" value={text} placeholder="Write a message..." rows="5" onChange={this.handleChange}></textarea>
                     <button type='submit' value='Send'>
 						Send
 					</button>
