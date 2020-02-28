@@ -90,6 +90,17 @@ class ChatroomContainer extends Component {
 						<h2 className='chatroom-title'>Hi {this.props.currentUser.username} !</h2>
 						<p>You are not a member in any chatroom </p>
 					</div>
+
+					<div className='create-chatroom'>
+						<div className='create-chatroom-title'>
+							<h2>You can create a chatroom here and invite your friends</h2>
+						</div>
+						<div>
+							<form>
+								<input type='text' name='chatroom-name' placeholder="Enter your chatroom's name here" required />
+							</form>
+						</div>
+					</div>
 				</div>
 			)
 		} else {
@@ -114,6 +125,17 @@ class ChatroomContainer extends Component {
 								</Link>
 							)
 						})}
+					</div>
+
+					<div className='create-chatroom'>
+						<div className='create-chatroom-title'>
+							<h2>You can create a chatroom here and invite your friends</h2>
+						</div>
+						<div>
+							<form>
+								<input type='text' name='chatroom-name' placeholder="Enter your chatroom's name here" required />
+							</form>
+						</div>
 					</div>
 				</div>
 			)
