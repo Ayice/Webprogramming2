@@ -28,7 +28,7 @@ class Chat extends Component {
                 currentChatroom: {id: doc.id, ...doc.data() }
             })
         })
-        .then(test => {fire.collection('messages').doc(this.state.currentChatroom.id).collection('messages').onSnapshot(doc => {
+        .then(() => {fire.collection('messages').doc(this.state.currentChatroom.id).collection('messages').onSnapshot(doc => {
             let fetchedMsgs = []
             fetchedMsgs = []
             doc.forEach(msg => {
@@ -76,7 +76,9 @@ class Chat extends Component {
             <div id="chat-section">
                 <div className="chat-header"><h2>{this.state.currentChatroom.name}</h2></div>
                 <div className="message-container">
-                {messages.map((element, index) => {
+                {messages
+                // .sort()
+                .map((element, index) => {
 							return (
                             <div className={'message ' + (this.props.currentUser.username === element.sender ?  'sent' : 'received')} key={index}>{element.sender}: {element.text}
 								</div>
