@@ -77,7 +77,8 @@ class Chat extends Component {
                 <div className="chat-header"><h2>{this.state.currentChatroom.name}</h2></div>
                 <div className="message-container">
                 {messages
-                // .sort()
+                // should sort the messages so last sent shows up first (from the bottom) use .sort()
+                // fix that message-container shows bottom first, so you don't have to scroll down to see latest message
                 .map((element, index) => {
 							return (
                             <div className={'message ' + (this.props.currentUser.username === element.sender ?  'sent' : 'received')} key={index}>{element.sender}: {element.text}
