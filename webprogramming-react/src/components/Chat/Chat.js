@@ -49,19 +49,23 @@ class Chat extends Component {
 	}
 
     sendMessage = event => {
-        var timestamp = Date.now();
+        var today = new Date();
+        var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var timestamp = date +' '+ time;
+
         fire.collection('messages').doc(this.state.currentChatroom.id).collection('messages').add({
             text: this.state.text,
             sender: this.props.currentUser.username,
             timestamp: timestamp
         })
         .then(function() {
-            console.log("Document successfully written!");
+            console.log("Message successfully sent!");
         })
         .catch(function(error) {
-            console.error("Error writing document: ", error);
+            console.error("Error sending message: ", error);
         });
-        console.log(this.state.text, this.state.currentUser.username, timestamp )
+        console.log(this.state.text, this.state.currentUser.username, timestamp );
         this.setState(this.initialState)
 	}
 
