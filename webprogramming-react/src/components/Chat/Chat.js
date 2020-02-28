@@ -9,12 +9,15 @@ class Chat extends Component {
     constructor(props) {
 		super(props)
 
-		this.state = {
+		this.initialState = {
             currentUser: {},
             currentChatroom: { id: props.match.params.id },
             messages: [],
             text: ''
         }
+
+        this.state = this.initialState
+        this.sendMessage = this.sendMessage.bind(this)
     }
     
     componentDidMount(){
@@ -46,12 +49,10 @@ class Chat extends Component {
 	}
 
     sendMessage = event => {
-        var date = new Date();
-        var timestamp = date.getTime();
-        event.preventDefault()
+        var timestamp = Date.now();
         fire.collection('messages').doc(this.state.currentChatroom.id).collection('messages').add({
             text: this.state.text,
-            sender: this.state.currentUser.username,
+            sender: this.props.currentUser.username,
             timestamp: timestamp
         })
         .then(function() {
@@ -60,7 +61,8 @@ class Chat extends Component {
         .catch(function(error) {
             console.error("Error writing document: ", error);
         });
-        // this.setState(this.initialState)
+        console.log(this.state.text, this.state.currentUser.username, timestamp )
+        this.setState(this.initialState)
 	}
 
     render() {
@@ -79,7 +81,11 @@ class Chat extends Component {
                     <div className="message received">Received message example</div>
 
                 </div>
-                <form onSubmit={this.sendMessage}>
+                <form onSubmit={e => {
+						e.preventDefault()
+						this.sendMessage(this.state)
+					}}
+                    >
                     <textarea name="text" placeholder="Write a message..." rows="5" onChange={this.handleChange}></textarea>
                     <button type='submit' value='Send'>
 						Send
