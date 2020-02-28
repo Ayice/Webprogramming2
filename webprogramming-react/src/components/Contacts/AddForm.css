@@ -1,0 +1,19 @@
+.contact-add {
+	position: relative;
+	height: 50px;
+}
+
+.contact-addition:before,
+.contact-addition:after {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	content: ' ';
+	height: 25px;
+	width: 2px;
+	background-color: #333;
+}
+
+.contact-addition:before {
+	transform: rotate(90deg);
+}

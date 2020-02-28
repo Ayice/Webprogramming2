@@ -18,7 +18,8 @@ class App extends Component {
 		super()
 
 		this.state = {
-			currentUser: {}
+			currentUser: {},
+			allUsers: []
 		}
 	}
 
@@ -30,15 +31,18 @@ class App extends Component {
 					.doc(user.uid)
 					.get()
 					.then(doc => {
-						this.setState({ currentUser: { ...doc.data(), id: doc.id } })
+						this.setState({ currentUser: { ...doc.data(), id: doc.id, friends: [] } })
 					})
 					.then(() => {
 						this.fetchFriends()
 					})
-			} else {
-				this.setState({ currentUser: {} })
+					.catch(err => {
+						alert(err)
+					})
 			}
 		})
+
+		this.fetchUsers()
 	}
 
 	fetchFriends() {
@@ -46,34 +50,96 @@ class App extends Component {
 		fire
 			.collection('user-user')
 			.doc(this.state.currentUser.id)
-			.get()
-			.then(doc => {
-				if (doc.data() === undefined) {
-					throw Error
-				}
+			.onSnapshot(doc => {
 				friendId = Object.keys(doc.data())
+				this.fetchFriendData(friendId)
+			})
+	}
+
+	fetchFriendData(friendArray) {
+		let friendDataArray = []
+		friendArray.forEach(element => {
+			// console.log(element)
+			fire
+				.collection('users')
+				.doc(element)
+				.get()
+				.then(friendData => {
+					friendDataArray.push({ id: friendData.id, ...friendData.data() })
+				})
+				.then(() => {
+					this.setState({
+						currentUser: { ...this.state.currentUser, friends: friendDataArray }
+					})
+				})
+		})
+	}
+
+	fetchUsers() {
+		let allUsers = []
+		fire
+			.collection('users')
+			.get()
+			.then(querySnapshot => {
+				querySnapshot.forEach(doc => {
+					allUsers.push({ id: doc.id, ...doc.data() })
+				})
 			})
 			.then(() => {
-				friendId.forEach(element => {
-					fire
-						.collection('users')
-						.doc(element)
-						.get()
-						.then(friendData => {
-							friendId = [friendData.data()]
-						})
-
-						.then(() => {
-							this.setState({
-								currentUser: { ...this.state.currentUser, friends: friendId }
-							})
-						})
+				this.setState({
+					allUsers: allUsers
 				})
 			})
+	}
+
+	addUser = friend => {
+		let currentUserId = this.state.currentUser.id
+		fire
+			.collection('user-user')
+			.doc(currentUserId)
+			.set(
+				{
+					[friend]: true
+				},
+				{ merge: true }
+			)
+			.then(() => {
+				fire
+					.collection('user-user')
+					.doc(friend)
+					.set(
+						{
+							[currentUserId]: true
+						},
+						{ merge: true }
+					)
+			})
+			.then(() => {
+				console.log('Yes we are now friends ! ')
+			})
+	}
+
+	handleRemove = friendId => {
+		const currentUserId = this.state.currentUser.id
+		fire
+			.collection('user-user')
+			.doc(currentUserId)
+			.update({
+				[friendId]: firebase.firestore.FieldValue.delete()
+			})
+			.then(() => {
+				fire
+					.collection('user-user')
+					.doc(friendId)
+					.update({
+						[currentUserId]: firebase.firestore.FieldValue.delete()
+					})
+			})
+			.then(() => {
+				alert('You just deleted a friend... Hope you will be friends again')
+			})
 			.catch(err => {
-				this.setState({
-					errorMsg: true
-				})
+				console.log(err, 'What an error')
 			})
 	}
 
@@ -87,7 +153,10 @@ class App extends Component {
 						<Route path='/chatrooms/chat/:id' exact render={props => <Chat {...props} currentUser={this.state.currentUser} />} />
 						<Route path='/profile' exact render={props => <Profile {...props} currentUser={this.state.currentUser} />} />
 						<Route path='/dashboard' render={props => <Dashboard {...props} currentUser={this.state.currentUser} />} />
-						<Route path='/contacts' render={props => <Contacts {...props} currentUser={this.state.currentUser} />} />
+						<Route
+							path='/contacts'
+							render={props => <Contacts {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addUser} handleRemove={this.handleRemove} />}
+						/>
 						<Route path='/signup' component={SignUpForm} />
 						<Route path='/' exact component={LoginForm} />
 					</Switch>
