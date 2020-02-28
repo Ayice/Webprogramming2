@@ -12,7 +12,8 @@ class Chat extends Component {
 		this.state = {
             currentUser: {},
             currentChatroom: { id: props.match.params.id },
-            messages: []
+            messages: [],
+            text: ''
         }
     }
     
@@ -49,7 +50,7 @@ class Chat extends Component {
         var timestamp = date.getTime();
         users.preventDefault()
         fire.collection('messages').doc(this.state.currentChatroom.id).collection('messages').add({
-            text: "",
+            text: this.state.text,
             sender: this.state.currentUser.username,
             timestamp: timestamp
         })
@@ -79,7 +80,7 @@ class Chat extends Component {
 
                 </div>
                 <form onSubmit={this.sendMessage}>
-                    <textarea name="message" placeholder="Write a message..." rows="5" onChange={this.handleChange}></textarea>
+                    <textarea name="text" placeholder="Write a message..." rows="5" onChange={this.handleChange}></textarea>
                     <button type='submit' value='Send'>
 						Send
 					</button>
