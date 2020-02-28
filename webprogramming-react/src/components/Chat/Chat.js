@@ -3,6 +3,7 @@ import fire from '../../firebase'
 import firebase from 'firebase'
 import 'firebase/auth'
 import './Chat.css'
+import { useParams } from 'react-router-dom'
 
 class Chat extends Component {
     constructor(props) {
@@ -36,11 +37,29 @@ class Chat extends Component {
         })})
     }
     
+    handleChange = event => {
+		const { name, value } = event.target
+		this.setState({
+			[name]: value
+		})
+	}
 
-
-    sendMessage = event => {
-		event.preventDefault()
-		
+    sendMessage = users => {
+        var date = new Date();
+        var timestamp = date.getTime();
+        users.preventDefault()
+        fire.collection('messages').doc(this.state.currentChatroom.id).collection('messages').add({
+            text: "",
+            sender: this.state.currentUser.username,
+            timestamp: timestamp
+        })
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
+        // this.setState(this.initialState)
 	}
 
     render() {
@@ -60,10 +79,10 @@ class Chat extends Component {
 
                 </div>
                 <form onSubmit={this.sendMessage}>
-                    <textarea name="message" placeholder="Write a message..." rows="5"></textarea>
+                    <textarea name="message" placeholder="Write a message..." rows="5" onChange={this.handleChange}></textarea>
                     <button type='submit' value='Send'>
-							Send
-						</button>
+						Send
+					</button>
                 </form>
             </div>
         )
