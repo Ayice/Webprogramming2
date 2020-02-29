@@ -20,7 +20,9 @@ class Chat extends Component {
 	}
 
 	componentDidMount() {
-		console.log(this.state)
+		// console.log(firebase.firestore.Timestamp.now().toMillis())
+		// console.log(this.state)
+
 		fire
 			.collection('chatrooms')
 			.doc(this.state.currentChatroom.id)
@@ -36,15 +38,18 @@ class Chat extends Component {
 					.collection('messages')
 					.doc(this.state.currentChatroom.id)
 					.collection('messages')
+					.orderBy('compareTimestamp')
 					.onSnapshot(doc => {
 						let fetchedMsgs = []
-						fetchedMsgs = []
 						doc.forEach(msg => {
 							fetchedMsgs.push(msg.data())
+							console.log(fetchedMsgs.sort((a, b) => a.compareTimestamp > b.compareTimestamp))
+							// fetchedMsgs.compareTimestamp.sort((a, b) => a - b)
 							this.setState({
 								messages: fetchedMsgs
 							})
 						})
+						// console.log(this.state.messages)
 					})
 			})
 	}
@@ -67,9 +72,13 @@ class Chat extends Component {
 			.doc(this.state.currentChatroom.id)
 			.collection('messages')
 			.add({
+				/**
+				 * timestamp: firebase.firestore.Timestamp.now()
+				 */
 				text: this.state.text,
 				sender: this.props.currentUser.username,
-				timestamp: timestamp
+				timestamp: timestamp,
+				compareTimestamp: firebase.firestore.Timestamp.now().toMillis()
 			})
 			.then(function() {
 				console.log('Message successfully sent!')
