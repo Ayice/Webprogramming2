@@ -68,22 +68,31 @@
 
 .contact-delete,
 .contact-add {
-	position: relative;
-	height: 50px;
-	width: 10%;
-	right: 0;
+	position: absolute;
+	height: 45px;
+	width: 45px;
+	right: 2%;
+	border: 1px solid;
+	border-radius: 50%;
 	display: flex;
 	align-items: center;
 }
 
-/* .contact-cross {
-	display: block;
-	height: 10px;
-	background-color: black;
-	width: 3px;
-} */
+.contact-cross {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 20px;
+	transform: translate(-50%, -50%);
+	height: 20px;
+}
+
 .contact-delete:hover {
 	background-color: rgb(228, 149, 149);
+}
+
+.contact-add:hover {
+	background-color: rgb(181, 255, 168);
 }
 
 .contact-cross:before {
@@ -95,11 +104,14 @@
 }
 
 .contact-cross:before,
-.contact-cross:after {
+.contact-cross:after,
+.contact-addition:before,
+.contact-addition:after {
 	position: absolute;
-	left: 15px;
+	left: 50%;
+	top: 30%;
 	content: ' ';
-	height: 33px;
+	height: 15px;
 	width: 2px;
 	background-color: #333;
 }
