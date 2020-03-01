@@ -143,6 +143,24 @@ class App extends Component {
 			})
 	}
 
+	addToChat = (userId, chatroomId) => {
+		fire
+			.collection('user-rooms')
+			.doc(userId)
+			.set(
+				{
+					[chatroomId]: true
+				},
+				{ merge: true }
+			)
+			.then(() => {
+				console.log(`Yes! You connected you friend to the chatroom`)
+			})
+			.catch(err => {
+				console.log(err)
+			})
+	}
+
 	render() {
 		return (
 			<div className='App'>
