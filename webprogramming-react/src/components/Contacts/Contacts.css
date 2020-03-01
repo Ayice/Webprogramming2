@@ -103,6 +103,10 @@
 	transform: rotate(-45deg);
 }
 
+.contact-addition:before {
+	transform: rotate(90deg);
+}
+
 .contact-cross:before,
 .contact-cross:after,
 .contact-addition:before,
@@ -114,4 +118,8 @@
 	height: 15px;
 	width: 2px;
 	background-color: #333;
+}
+
+.new-contact-title {
+	margin-bottom: 1em;
 }

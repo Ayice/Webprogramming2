@@ -10,16 +10,11 @@ class Contacts extends Component {
 		}
 	}
 
-	// componentDidUpdate() {
-	// 	console.log(this.props)
-	// }
-
 	handleSubmit = friend => {
 		this.props.handleSubmit(friend)
 	}
 
 	removeFriend = friendId => {
-		// console.log(this.props, ' kusse')
 		this.props.handleRemove(friendId)
 	}
 
@@ -62,13 +57,14 @@ class Contacts extends Component {
 						)}
 					</div>
 				</div>
+
 				<div className='new-contact-div'>
 					<div className='new-contact-title'>
 						<h2>Want new friends ? </h2>
 						<p>Click this button, and let the magic happen!</p>
+						<button onClick={() => this.setState({ addNewContact: !addNewContact })}> Get friends</button>
 					</div>
 
-					<button onClick={() => this.setState({ addNewContact: !addNewContact })}> Get friends</button>
 					{addNewContact ? <AddForm handleSubmit={this.handleSubmit} users={this.props.allUsers} /> : ''}
 				</div>
 			</div>
