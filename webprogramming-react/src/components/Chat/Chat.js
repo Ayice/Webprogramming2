@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import fire from '../../firebase'
 import firebase from 'firebase'
 import 'firebase/auth'
+import { Redirect } from 'react-router-dom'
+
 import './Chat.css'
 
 import AddForm from '../AddForm/AddForm'
@@ -13,7 +15,8 @@ class Chat extends Component {
 		this.state = {
 			currentChatroom: { id: props.match.params.id },
 			messages: [],
-			text: ''
+			text: '',
+			toDashboard: false
 		}
 		this.sendMessage = this.sendMessage.bind(this)
 	}
@@ -103,8 +106,25 @@ class Chat extends Component {
 		})
 	}
 
+	removeFromChat = (userId, chatroomId) => {
+		// console.log(userId)
+		// console.log(chatroomId)
+		fire
+			.collection('user-rooms')
+			.doc(userId)
+			.update({
+				[chatroomId]: firebase.firestore.FieldValue.delete()
+			})
+			.then(() => {
+				console.log('You left the Chatroom.. what a sad day')
+				this.props.history.push('/chatrooms')
+			})
+	}
+
 	render() {
-		const { messages, text } = this.state
+		const { messages, text, currentChatroom } = this.state
+
+		// if (this.state.toDashboard)
 
 		return (
 			<div>
@@ -140,6 +160,17 @@ class Chat extends Component {
 							Send
 						</button>
 					</form>
+				</div>
+				´
+				<div>
+					<button
+						onClick={e => {
+							e.preventDefault()
+							this.removeFromChat(this.props.currentUser.id, currentChatroom.id)
+						}}
+					>
+						Leave this chat
+					</button>
 				</div>
 				<AddForm handleSubmit={this.handleSubmit} users={this.props.allUsers} />
 			</div>

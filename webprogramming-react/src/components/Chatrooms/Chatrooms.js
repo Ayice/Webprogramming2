@@ -15,7 +15,6 @@ class ChatroomContainer extends Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		console.log(nextProps)
 		if (nextProps.currentUser !== this.props.currentUser) {
 			this.getChatrooms(nextProps)
 		}
@@ -52,7 +51,6 @@ class ChatroomContainer extends Component {
 							let data = { id: chatRoomData.id, ...chatRoomData.data() }
 
 							if (data.members.length > 0) {
-								// console.log(data)
 								data.members.forEach(element => {
 									members = []
 									element.get().then(doc => {
