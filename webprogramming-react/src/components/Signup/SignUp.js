@@ -52,13 +52,14 @@ export default class SignUpForm extends Component {
 				console.log(errorCode, errorMessage)
 				// ...
 			})
-		console.log('test')
+
 		this.setState(this.initialState)
 	}
 
 	render() {
 		const { name, address, email, username, password } = this.state
 		return (
+			// <input name={input.name} value={input.name} />
 			<div>
 				<form
 					className='signupform'

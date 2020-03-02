@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import fire from './firebase'
 import firebase from 'firebase'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 
 import './App.css'
 import Navbar from './components/Navbar/Navbar'
@@ -19,7 +19,8 @@ class App extends Component {
 
 		this.state = {
 			currentUser: {},
-			allUsers: []
+			allUsers: [],
+			isLoggedIn: false
 		}
 	}
 
@@ -31,9 +32,13 @@ class App extends Component {
 					.doc(user.uid)
 					.get()
 					.then(doc => {
+						// console.log(doc)
 						this.setState({ currentUser: { ...doc.data(), id: doc.id, friends: [] } })
 					})
 					.then(() => {
+						this.setState({
+							isLoggedIn: true
+						})
 						this.fetchFriends()
 					})
 					.catch(err => {
@@ -51,18 +56,22 @@ class App extends Component {
 			.collection('user-user')
 			.doc(this.state.currentUser.id)
 			.onSnapshot(doc => {
-				friendId = Object.keys(doc.data())
-				this.fetchFriendData(friendId)
+				if (doc.data()) {
+					// console.log(doc.data())
+
+					friendId = Object.keys(doc.data())
+					this.fetchFriendData(friendId)
+				}
 			})
 	}
 
 	fetchFriendData(friendArray) {
 		let friendDataArray = []
-		friendArray.forEach(element => {
+		friendArray.forEach(friendId => {
 			// console.log(element)
 			fire
 				.collection('users')
-				.doc(element)
+				.doc(friendId)
 				.get()
 				.then(friendData => {
 					friendDataArray.push({ id: friendData.id, ...friendData.data() })
@@ -80,8 +89,8 @@ class App extends Component {
 		fire
 			.collection('users')
 			.get()
-			.then(querySnapshot => {
-				querySnapshot.forEach(doc => {
+			.then(users => {
+				users.forEach(doc => {
 					allUsers.push({ id: doc.id, ...doc.data() })
 				})
 			})
@@ -139,7 +148,7 @@ class App extends Component {
 				alert('You just deleted a friend... Hope you will be friends again')
 			})
 			.catch(err => {
-				console.log(err, 'What an error')
+				console.log(err, 'What! an error ?')
 			})
 	}
 
@@ -167,13 +176,14 @@ class App extends Component {
 				<Router basename={'/react-exam'}>
 					<Navbar currentUser={this.state.currentUser} />
 					<Switch>
-						<Route path='/chatrooms' exact render={props => <ChatroomContainer {...props} currentUser={this.state.currentUser} />} />
-						<Route path='/chatrooms/chat/:id' exact render={props => <Chat {...props} currentUser={this.state.currentUser} />} />
-						<Route path='/profile' exact render={props => <Profile {...props} currentUser={this.state.currentUser} />} />
-						<Route path='/dashboard' render={props => <Dashboard {...props} currentUser={this.state.currentUser} />} />
-						<Route path='/contacts' render={props => <Contacts {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addUser} handleRemove={this.handleRemove} />} />
-						<Route path='/signup' component={SignUpForm} />
-						<Route path='/' exact component={LoginForm} />
+						<Route path='/chatrooms' exact render={props => (this.state.isLoggedIn ? <ChatroomContainer {...props} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
+						<Route path='/chatrooms/chat/:id' exact render={props => (this.state.isLoggedIn ? <Chat {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} addToChat={this.addToChat} /> : <Redirect to='/' />)} />
+						<Route path='/profile' exact render={props => (this.state.isLoggedIn ? <Profile {...props} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
+						11
+						<Route path='/dashboard' render={props => (this.state.isLoggedIn ? <Dashboard {...props} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
+						<Route path='/contacts' render={props => (this.state.isLoggedIn ? <Contacts {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addUser} handleRemove={this.handleRemove} /> : <Redirect to='/' />)} />
+						<Route path='/signup' component={SignUpForm} render={props => (!this.state.isLoggedIn ? <SignUpForm /> : <Redirect to='/dashboard' />)} />
+						<Route path='/' exact render={props => (!this.state.isLoggedIn ? <LoginForm /> : <Redirect to='/dashboard' />)} />
 					</Switch>
 				</Router>
 			</div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import fire from '../../firebase'
+import firebase from 'firebase'
 import { Link } from 'react-router-dom'
 // import firebase from 'firebase'
 
@@ -36,7 +37,7 @@ class ChatroomContainer extends Component {
 			.get()
 			.then(doc => {
 				chatRoomIds = Object.keys(doc.data())
-				console.log(chatRoomIds)
+				// console.log(chatRoomIds)
 				if (chatRoomIds.length < 1) {
 					throw Error
 				}
@@ -51,7 +52,6 @@ class ChatroomContainer extends Component {
 							let data = { id: chatRoomData.id, ...chatRoomData.data() }
 
 							if (data.members.length > 0) {
-								// console.log(data)
 								data.members.forEach(element => {
 									members = []
 									element.get().then(doc => {
@@ -77,6 +77,20 @@ class ChatroomContainer extends Component {
 				this.setState({
 					errorMsg: true
 				})
+			})
+	}
+	removeFromChat = (userId, chatroomId) => {
+		// console.log(userId)
+		// console.log(chatroomId)
+		fire
+			.collection('user-rooms')
+			.doc(userId)
+			.update({
+				[chatroomId]: firebase.firestore.FieldValue.delete()
+			})
+			.then(() => {
+				console.log('You left the Chatroom.. what a sad day')
+				this.props.history.push('/chatrooms')
 			})
 	}
 
@@ -110,18 +124,27 @@ class ChatroomContainer extends Component {
 						<h2 className='chatroom-title'>Hi {this.props.currentUser.username} !</h2>
 						<p>These are the chatrooms you are a part of: </p>
 					</div>
+
 					<div className='chatrooms'>
-						{chatrooms.map(element => {
+						{chatrooms.map(chatroom => {
 							return (
-								<Link key={element.id} to={`chatrooms/chat/${element.id}`}>
+								<Link className='chatroom-link' key={chatroom.id} to={`chatrooms/chat/${chatroom.id}`}>
 									<div className='chatroom'>
-										<p>{element.name}</p>
+										<p>{chatroom.name}</p>
 										{/* Later in the process 
 									
 									{element.members.map((member, index) => (
 										<p> {member.name} </p>
 									))} */}
 									</div>
+									<span
+										className='chatroom-leave'
+										onClick={() => {
+											this.removeFromChat(this.props.currentUser.id, chatroom.id)
+										}}
+									>
+										X
+									</span>
 								</Link>
 							)
 						})}

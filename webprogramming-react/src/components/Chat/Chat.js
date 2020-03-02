@@ -2,33 +2,39 @@ import React, { Component } from 'react'
 import fire from '../../firebase'
 import firebase from 'firebase'
 import 'firebase/auth'
+import { Redirect } from 'react-router-dom'
+
 import './Chat.css'
-import { useParams } from 'react-router-dom'
+
+import AddForm from '../AddForm/AddForm'
 
 class Chat extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			currentUser: {},
 			currentChatroom: { id: props.match.params.id },
 			messages: [],
-			text: ''
+			text: '',
+			toDashboard: false
 		}
-
 		this.sendMessage = this.sendMessage.bind(this)
+	}
+
+	scrollToBottom = () => {
+		this.messagesEnd.scrollIntoView({ behavior: 'smooth' })
 	}
 
 	componentDidMount() {
 		// console.log(firebase.firestore.Timestamp.now().toMillis())
 		// console.log(this.state)
+		this.scrollToBottom()
 
 		fire
 			.collection('chatrooms')
 			.doc(this.state.currentChatroom.id)
 			.get()
 			.then(doc => {
-				console.log(doc.data())
 				this.setState({
 					currentChatroom: { id: doc.id, ...doc.data() }
 				})
@@ -43,7 +49,6 @@ class Chat extends Component {
 						let fetchedMsgs = []
 						doc.forEach(msg => {
 							fetchedMsgs.push(msg.data())
-							console.log(fetchedMsgs.sort((a, b) => a.compareTimestamp > b.compareTimestamp))
 							// fetchedMsgs.compareTimestamp.sort((a, b) => a - b)
 							this.setState({
 								messages: fetchedMsgs
@@ -54,11 +59,19 @@ class Chat extends Component {
 			})
 	}
 
+	componentDidUpdate() {
+		this.scrollToBottom()
+	}
+
 	handleChange = event => {
 		const { name, value } = event.target
 		this.setState({
 			[name]: value
 		})
+	}
+
+	handleSubmit = friend => {
+		this.props.addToChat(friend, this.state.currentChatroom.id)
 	}
 
 	sendMessage = event => {
@@ -73,12 +86,14 @@ class Chat extends Component {
 			.collection('messages')
 			.add({
 				/**
-				 * timestamp: firebase.firestore.Timestamp.now()
+				 * TODO: Kan man compare firebase timestamps ?
+				 * Det kan man
+				 *
 				 */
 				text: this.state.text,
 				sender: this.props.currentUser.username,
 				timestamp: timestamp,
-				compareTimestamp: firebase.firestore.Timestamp.now().toMillis()
+				compareTimestamp: firebase.firestore.Timestamp.now()
 			})
 			.then(function() {
 				console.log('Message successfully sent!')
@@ -86,43 +101,78 @@ class Chat extends Component {
 			.catch(function(error) {
 				console.error('Error sending message: ', error)
 			})
-		console.log(this.state.text, this.state.currentUser.username, timestamp)
 		this.setState({
 			text: ''
 		})
 	}
 
+	removeFromChat = (userId, chatroomId) => {
+		// console.log(userId)
+		// console.log(chatroomId)
+		fire
+			.collection('user-rooms')
+			.doc(userId)
+			.update({
+				[chatroomId]: firebase.firestore.FieldValue.delete()
+			})
+			.then(() => {
+				console.log('You left the Chatroom.. what a sad day')
+				this.props.history.push('/chatrooms')
+			})
+	}
+
 	render() {
-		const { messages, text } = this.state
+		const { messages, text, currentChatroom } = this.state
+
+		// if (this.state.toDashboard)
+
 		return (
-			<div id='chat-section'>
-				<div className='chat-header'>
-					<h2>{this.state.currentChatroom.name}</h2>
-				</div>
-				<div className='message-container'>
-					{messages
-						// should sort the messages so last sent shows up first (from the bottom) use .sort()
-						// fix that message-container shows bottom first, so you don't have to scroll down to see latest message
-						.map((element, index) => {
+			<div>
+				<div id='chat-section'>
+					<div className='chat-header'>
+						<h2>{this.state.currentChatroom.name}</h2>
+					</div>
+
+					<div id='message-container'>
+						{messages.map((message, index) => {
 							return (
-								<div className={'message ' + (this.props.currentUser.username === element.sender ? 'sent' : 'received')} key={index}>
-									{element.sender}: {element.text}
+								<div className={'message ' + (this.props.currentUser.username === message.sender ? 'sent' : 'received')} key={index}>
+									{message.sender}: {message.text}
 								</div>
 							)
 						})}
-				</div>
+						<div
+							style={{ float: 'left', clear: 'both' }}
+							ref={el => {
+								this.messagesEnd = el
+							}}
+						></div>
+					</div>
 
-				<form
-					onSubmit={e => {
-						e.preventDefault()
-						this.sendMessage(this.state)
-					}}
-				>
-					<textarea name='text' value={text} placeholder='Write a message...' rows='5' onChange={this.handleChange}></textarea>
-					<button type='submit' value='Send'>
-						Send
+					<form
+						onSubmit={e => {
+							e.preventDefault()
+							this.sendMessage(this.state)
+						}}
+					>
+						<textarea name='text' value={text} placeholder='Write a message...' rows='5' onChange={this.handleChange}></textarea>
+						<button type='submit' value='Send'>
+							Send
+						</button>
+					</form>
+				</div>
+				´
+				<div>
+					<button
+						onClick={e => {
+							e.preventDefault()
+							this.removeFromChat(this.props.currentUser.id, currentChatroom.id)
+						}}
+					>
+						Leave this chat
 					</button>
-				</form>
+				</div>
+				<AddForm handleSubmit={this.handleSubmit} users={this.props.allUsers} />
 			</div>
 		)
 	}
