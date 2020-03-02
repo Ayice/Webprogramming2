@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import fire from '../../firebase'
 import firebase from 'firebase'
 import 'firebase/auth'
-import { Redirect } from 'react-router-dom'
 
 import './Chat.css'
 
