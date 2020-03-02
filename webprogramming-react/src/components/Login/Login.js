@@ -3,7 +3,7 @@ import './Login.css'
 import fire from '../../firebase'
 import firebase from 'firebase'
 import 'firebase/auth'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 class LoginForm extends Component {
 	constructor(props) {
@@ -15,6 +15,7 @@ class LoginForm extends Component {
 		}
 
 		this.state = {
+			redirect: null,
 			currentUser: {}
 		}
 	}
@@ -35,6 +36,9 @@ class LoginForm extends Component {
 			.then(() => {
 				this.setState(this.initialState)
 			})
+			.then(() => {
+				this.setState({ redirect: '/dashboard' })
+			})
 			.catch(function(error) {
 				var errorCode = error.code
 				var errorMessage = error.message
@@ -43,6 +47,9 @@ class LoginForm extends Component {
 	}
 
 	render() {
+		if (this.state.redirect) {
+			return <Redirect to={this.state.redirect} />
+		}
 		return (
 			<div id='login-section'>
 				<h1>Login to this mega awesome chat app</h1>
@@ -64,7 +71,6 @@ class LoginForm extends Component {
 						Not a user? Sign up <Link to='/signup'>here</Link>
 					</h5>
 				</div>
-
 			</div>
 		)
 	}
