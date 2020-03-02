@@ -20,7 +20,7 @@
     margin-bottom: 20px;
 }
 
-.message-container {
+#message-container {
     display: flex;
     flex-direction: column;
     overflow-y: auto;

@@ -19,9 +19,17 @@ class Chat extends Component {
 		this.sendMessage = this.sendMessage.bind(this)
 	}
 
+	scrollToBottom = () => {
+		this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+	  }
+	  componentDidUpdate() {
+		this.scrollToBottom();
+	  }
+
 	componentDidMount() {
 		// console.log(firebase.firestore.Timestamp.now().toMillis())
 		// console.log(this.state)
+		this.scrollToBottom();
 
 		fire
 			.collection('chatrooms')
@@ -94,12 +102,13 @@ class Chat extends Component {
 
 	render() {
 		const { messages, text } = this.state
+
 		return (
 			<div id='chat-section'>
 				<div className='chat-header'>
 					<h2>{this.state.currentChatroom.name}</h2>
 				</div>
-				<div className='message-container'>
+				<div id='message-container'>
 					{messages
 						// should sort the messages so last sent shows up first (from the bottom) use .sort()
 						// fix that message-container shows bottom first, so you don't have to scroll down to see latest message
@@ -110,6 +119,9 @@ class Chat extends Component {
 								</div>
 							)
 						})}
+						<div style={{ float:"left", clear: "both" }}
+							ref={(el) => { this.messagesEnd = el; }}>
+						</div>
 				</div>
 
 				<form
