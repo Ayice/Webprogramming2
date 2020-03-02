@@ -60,3 +60,35 @@
 	transform: scale(1.05);
 	opacity: 1;
 }
+
+.chatroom-link:hover .chatroom-leave {
+	opacity: 1;
+	pointer-events: all;
+	top: 5%;
+}
+
+.chatroom-link {
+	position: relative;
+}
+
+.chatroom-leave {
+	transition: all 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+	opacity: 0;
+	pointer-events: none;
+	z-index: 10;
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	width: 50px;
+	height: 50px;
+	background: rgb(253, 100, 100);
+	position: absolute;
+	border-radius: 100%;
+	top: 10%;
+	right: -5%;
+	font-size: 1.5em;
+}
+
+.chatroom-leave:hover {
+	background-color: rgb(197, 50, 50);
+}

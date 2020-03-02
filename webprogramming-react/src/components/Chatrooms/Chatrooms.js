@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import fire from '../../firebase'
+import firebase from 'firebase'
 import { Link } from 'react-router-dom'
 // import firebase from 'firebase'
 
@@ -78,6 +79,20 @@ class ChatroomContainer extends Component {
 				})
 			})
 	}
+	removeFromChat = (userId, chatroomId) => {
+		// console.log(userId)
+		// console.log(chatroomId)
+		fire
+			.collection('user-rooms')
+			.doc(userId)
+			.update({
+				[chatroomId]: firebase.firestore.FieldValue.delete()
+			})
+			.then(() => {
+				console.log('You left the Chatroom.. what a sad day')
+				this.props.history.push('/chatrooms')
+			})
+	}
 
 	render() {
 		const { chatrooms, errorMsg } = this.state
@@ -113,7 +128,7 @@ class ChatroomContainer extends Component {
 					<div className='chatrooms'>
 						{chatrooms.map(chatroom => {
 							return (
-								<Link key={chatroom.id} to={`chatrooms/chat/${chatroom.id}`}>
+								<Link className='chatroom-link' key={chatroom.id} to={`chatrooms/chat/${chatroom.id}`}>
 									<div className='chatroom'>
 										<p>{chatroom.name}</p>
 										{/* Later in the process 
@@ -122,6 +137,14 @@ class ChatroomContainer extends Component {
 										<p> {member.name} </p>
 									))} */}
 									</div>
+									<span
+										className='chatroom-leave'
+										onClick={() => {
+											this.removeFromChat(this.props.currentUser.id, chatroom.id)
+										}}
+									>
+										X
+									</span>
 								</Link>
 							)
 						})}
