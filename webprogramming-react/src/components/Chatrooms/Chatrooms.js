@@ -15,6 +15,7 @@ class ChatroomContainer extends Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
+		console.log(nextProps)
 		if (nextProps.currentUser !== this.props.currentUser) {
 			this.getChatrooms(nextProps)
 		}
@@ -36,7 +37,7 @@ class ChatroomContainer extends Component {
 			.get()
 			.then(doc => {
 				chatRoomIds = Object.keys(doc.data())
-				console.log(chatRoomIds)
+				// console.log(chatRoomIds)
 				if (chatRoomIds.length < 1) {
 					throw Error
 				}
@@ -110,12 +111,13 @@ class ChatroomContainer extends Component {
 						<h2 className='chatroom-title'>Hi {this.props.currentUser.username} !</h2>
 						<p>These are the chatrooms you are a part of: </p>
 					</div>
+
 					<div className='chatrooms'>
-						{chatrooms.map(element => {
+						{chatrooms.map(chatroom => {
 							return (
-								<Link key={element.id} to={`chatrooms/chat/${element.id}`}>
+								<Link key={chatroom.id} to={`chatrooms/chat/${chatroom.id}`}>
 									<div className='chatroom'>
-										<p>{element.name}</p>
+										<p>{chatroom.name}</p>
 										{/* Later in the process 
 									
 									{element.members.map((member, index) => (

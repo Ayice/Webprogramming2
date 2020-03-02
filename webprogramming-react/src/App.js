@@ -31,6 +31,7 @@ class App extends Component {
 					.doc(user.uid)
 					.get()
 					.then(doc => {
+						// console.log(doc)
 						this.setState({ currentUser: { ...doc.data(), id: doc.id, friends: [] } })
 					})
 					.then(() => {
@@ -51,6 +52,8 @@ class App extends Component {
 			.collection('user-user')
 			.doc(this.state.currentUser.id)
 			.onSnapshot(doc => {
+				// console.log(doc)
+				// console.log(doc.data())
 				friendId = Object.keys(doc.data())
 				this.fetchFriendData(friendId)
 			})
@@ -58,11 +61,11 @@ class App extends Component {
 
 	fetchFriendData(friendArray) {
 		let friendDataArray = []
-		friendArray.forEach(element => {
+		friendArray.forEach(friendId => {
 			// console.log(element)
 			fire
 				.collection('users')
-				.doc(element)
+				.doc(friendId)
 				.get()
 				.then(friendData => {
 					friendDataArray.push({ id: friendData.id, ...friendData.data() })
@@ -80,8 +83,8 @@ class App extends Component {
 		fire
 			.collection('users')
 			.get()
-			.then(querySnapshot => {
-				querySnapshot.forEach(doc => {
+			.then(users => {
+				users.forEach(doc => {
 					allUsers.push({ id: doc.id, ...doc.data() })
 				})
 			})
@@ -139,7 +142,7 @@ class App extends Component {
 				alert('You just deleted a friend... Hope you will be friends again')
 			})
 			.catch(err => {
-				console.log(err, 'What an error')
+				console.log(err, 'What! an error ?')
 			})
 	}
 
@@ -168,13 +171,10 @@ class App extends Component {
 					<Navbar currentUser={this.state.currentUser} />
 					<Switch>
 						<Route path='/chatrooms' exact render={props => <ChatroomContainer {...props} currentUser={this.state.currentUser} />} />
-						<Route path='/chatrooms/chat/:id' exact render={props => <Chat {...props} currentUser={this.state.currentUser} />} />
+						<Route path='/chatrooms/chat/:id' exact render={props => <Chat {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addToChat} />} />
 						<Route path='/profile' exact render={props => <Profile {...props} currentUser={this.state.currentUser} />} />
 						<Route path='/dashboard' render={props => <Dashboard {...props} currentUser={this.state.currentUser} />} />
-						<Route
-							path='/contacts'
-							render={props => <Contacts {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addUser} handleRemove={this.handleRemove} />}
-						/>
+						<Route path='/contacts' render={props => <Contacts {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addUser} handleRemove={this.handleRemove} />} />
 						<Route path='/signup' component={SignUpForm} />
 						<Route path='/' exact component={LoginForm} />
 					</Switch>

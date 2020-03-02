@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './Contacts.css'
-import AddForm from './AddForm'
+import AddForm from '../AddForm/AddForm'
 
 class Contacts extends Component {
 	constructor(props) {

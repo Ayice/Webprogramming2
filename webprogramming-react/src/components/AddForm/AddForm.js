@@ -15,23 +15,23 @@ class AddForm extends Component {
 	render() {
 		return (
 			<div className='new-contact-div-contact'>
-				{this.props.users.map(x => (
-					<div className='contact' key={x.username}>
+				{this.props.users.map(user => (
+					<div className='contact' key={user.username}>
 						<div className='contact-avatar'>
 							<span></span>
 						</div>
 
 						<div className='contact-info'>
-							<p>{x.name} </p>
+							<p>{user.name} </p>
 
 							<div className='contact-info_hide'>
-								<p>{x.username} </p>
-								<p>{x.address} </p>
-								<p>{x.email} </p>
+								<p>{user.username} </p>
+								<p>{user.address} </p>
+								<p>{user.email} </p>
 							</div>
 						</div>
 
-						<div onClick={e => this.addFriend(x.id, e)} className='contact-add'>
+						<div onClick={e => this.addFriend(user.id)} className='contact-add'>
 							<span className='contact-addition'></span>
 						</div>
 					</div>

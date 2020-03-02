@@ -6,15 +6,23 @@ class Profile extends Component {
 		this.state = {
 			currentUser: props.currentUser
 		}
-		console.log(props)
 	}
 
 	componentDidMount() {
-		console.log(this.props.currentUser)
+		setTimeout(() => {
+			console.log(this.props.currentUser)
+		}, 1000)
 	}
 
 	render() {
-		return <h1>{this.props.currentUser.password}</h1>
+		return (
+			<div>
+				<h1>{this.props.currentUser.password}</h1>
+				<form>
+					<input value={this.props.currentUser.username} />
+				</form>
+			</div>
+		)
 	}
 }
 export default Profile
