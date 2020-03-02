@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import './Dashboard.css'
 import DashboardTile from './Dashboard-tiles'
-import fire from '../../firebase'
+// import fire from '../../firebase'
 
 class Dashboard extends Component {
 	constructor(props) {
@@ -19,7 +19,7 @@ class Dashboard extends Component {
 		}
 	}
 	componentDidUpdate() {
-		if (this.state.friends != this.props.currentUser.friends) {
+		if (this.state.friends !== this.props.currentUser.friends) {
 			this.setState({
 				friends: this.props.currentUser.friends
 			})
