@@ -21,10 +21,7 @@ class Chat extends Component {
 
 	scrollToBottom = () => {
 		this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-	  }
-	  componentDidUpdate() {
-		this.scrollToBottom();
-	  }
+	}
 
 	componentDidMount() {
 		// console.log(firebase.firestore.Timestamp.now().toMillis())
@@ -60,6 +57,10 @@ class Chat extends Component {
 						// console.log(this.state.messages)
 					})
 			})
+	}
+
+	componentDidUpdate() {
+		this.scrollToBottom();
 	}
 
 	handleChange = event => {
