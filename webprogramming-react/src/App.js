@@ -164,17 +164,14 @@ class App extends Component {
 	render() {
 		return (
 			<div className='App'>
-				<Router>
+				<Router basename={'/react-exam'}>
 					<Navbar currentUser={this.state.currentUser} />
 					<Switch>
 						<Route path='/chatrooms' exact render={props => <ChatroomContainer {...props} currentUser={this.state.currentUser} />} />
 						<Route path='/chatrooms/chat/:id' exact render={props => <Chat {...props} currentUser={this.state.currentUser} />} />
 						<Route path='/profile' exact render={props => <Profile {...props} currentUser={this.state.currentUser} />} />
 						<Route path='/dashboard' render={props => <Dashboard {...props} currentUser={this.state.currentUser} />} />
-						<Route
-							path='/contacts'
-							render={props => <Contacts {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addUser} handleRemove={this.handleRemove} />}
-						/>
+						<Route path='/contacts' render={props => <Contacts {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addUser} handleRemove={this.handleRemove} />} />
 						<Route path='/signup' component={SignUpForm} />
 						<Route path='/' exact component={LoginForm} />
 					</Switch>
