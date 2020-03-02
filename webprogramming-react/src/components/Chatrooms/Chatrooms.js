@@ -79,9 +79,8 @@ class ChatroomContainer extends Component {
 				})
 			})
 	}
-	removeFromChat = (userId, chatroomId) => {
-		// console.log(userId)
-		// console.log(chatroomId)
+	removeFromChat = (userId, chatroomId, e) => {
+		console.log(chatroomId)
 		fire
 			.collection('user-rooms')
 			.doc(userId)
@@ -89,8 +88,11 @@ class ChatroomContainer extends Component {
 				[chatroomId]: firebase.firestore.FieldValue.delete()
 			})
 			.then(() => {
-				console.log('You left the Chatroom.. what a sad day')
+				alert('You left the Chatroom.. what a sad day')
 				this.props.history.push('/chatrooms')
+			})
+			.then(() => {
+				this.getChatrooms(this.props)
 			})
 	}
 
@@ -128,24 +130,24 @@ class ChatroomContainer extends Component {
 					<div className='chatrooms'>
 						{chatrooms.map(chatroom => {
 							return (
-								<Link className='chatroom-link' key={chatroom.id} to={`chatrooms/chat/${chatroom.id}`}>
-									<div className='chatroom'>
+								<div className='chatroom' key={chatroom.id}>
+									<Link className='chatroom-link' to={`chatrooms/chat/${chatroom.id}`}>
 										<p>{chatroom.name}</p>
 										{/* Later in the process 
 									
 									{element.members.map((member, index) => (
 										<p> {member.name} </p>
 									))} */}
-									</div>
+									</Link>
 									<span
 										className='chatroom-leave'
-										onClick={() => {
-											this.removeFromChat(this.props.currentUser.id, chatroom.id)
+										onClick={e => {
+											this.removeFromChat(this.props.currentUser.id, chatroom.id, e)
 										}}
 									>
 										X
 									</span>
-								</Link>
+								</div>
 							)
 						})}
 					</div>
