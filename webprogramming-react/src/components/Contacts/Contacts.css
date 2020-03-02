@@ -35,11 +35,11 @@
 	transition: all 0.3s ease;
 }
 
-.contact:hover {
+.contact:active {
 	transition: all 0.3s ease;
 	max-height: 300px;
 }
-.contact:hover .contact-info_hide {
+.contact:active .contact-info_hide {
 	transition: all 0.3s ease;
 	opacity: 1;
 }
