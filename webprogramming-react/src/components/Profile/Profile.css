@@ -1,76 +1,75 @@
 h1 {
-    text-align: center;
+	text-align: center;
 }
 
 form label {
-    display: flex;
-    width: 20%;
-    align-items: center;
+	display: flex;
+	width: 20%;
+	align-items: center;
 }
 form input {
-    display: block;
-    width: 80%;
-    padding: 2%;
+	display: block;
+	width: 80%;
+	padding: 2%;
 }
 form input:focus {
-    outline: none;
+	outline: none;
 }
 form button {
-    margin: 0;
-    border: none;
-    color: white;
-    height: 45px;
+	margin: 0;
+	border: none;
+	/* color: white; */
+	height: 45px;
 }
 form button:hover {
-    cursor: pointer;
+	cursor: pointer;
 }
 
-
 .profileContainer {
-    display: flex;
-    flex-direction: column;
-    align-content: center;
+	display: flex;
+	flex-direction: column;
+	align-content: center;
 }
 
 .profileForm {
-    display: flex;
-    flex-direction: column;
-    width: 30%;
-    margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	width: 30%;
+	margin: 0 auto;
 }
 
 .profileFormfield {
-    display: flex;
-    flex-flow: row wrap;
-    height: 50px;
-    margin: 1% 0;
+	display: flex;
+	flex-flow: row wrap;
+	height: 50px;
+	margin: 1% 0;
 }
 
-.buttonContainer  {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    margin: 5% 0;
+.buttonContainer {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	margin: 5% 0;
 }
 .saveButton {
-    background-color: #74D87E;
-    transition: ease-in 0.25s;
+	background-color: #74d87e;
+	transition: ease-in 0.25s;
 }
 .saveButton:hover {
-    background-color: rgb(36, 138, 46);
+	background-color: rgb(36, 138, 46);
 }
 .manageContactsButton {
-    background-color: #98C2E9;
-    transition: ease-in 0.25s;
+	background-color: #98c2e9;
+	transition: ease-in 0.25s;
 }
 .manageContactsButton:hover {
-    background-color: rgb(41, 107, 168);
+	background-color: rgb(41, 107, 168);
 }
 .deleteAccountButton {
-    background-color: #E5503B;
-    transition: ease-in 0.25s;
+	background-color: #e5503b;
+	transition: ease-in 0.25s;
 }
 .deleteAccountButton:hover {
-    background-color: rgb(192, 59, 42);
+	background-color: rgb(192, 59, 42);
 }

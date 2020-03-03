@@ -105,7 +105,6 @@ class ChatroomContainer extends Component {
 	}
 
 	createChatroom = chatroom => {
-
 		let currentUserID = this.props.currentUser.id
 
 		fire
@@ -113,8 +112,8 @@ class ChatroomContainer extends Component {
 			.add({
 				name: this.state.chatroomName
 			})
-			.then( doc => {
-				console.log(doc.id)
+			.then(doc => {
+				// console.log(doc.id)
 				fire
 					.collection('user-rooms')
 					.doc(currentUserID)
@@ -126,17 +125,35 @@ class ChatroomContainer extends Component {
 					)
 			})
 			.then(() => {
-				console.log('You succesfully created a new chatroom!')
 				this.getChatrooms(this.props)
+				this.setState({
+					chatroomName: ''
+				})
 			})
-		this.setState({
-			chatroomName: ''
-		})
-
 	}
 
 	render() {
 		const { chatroomName, chatrooms, errorMsg } = this.state
+
+		const form = (
+			<div className='create-chatroom'>
+				<div className='create-chatroom-title'>
+					<h2>You can create a chatroom here and invite your friends</h2>
+				</div>
+
+				<div>
+					<form
+						onSubmit={e => {
+							e.preventDefault()
+							this.createChatroom(this.state)
+						}}
+					>
+						<input type='text' name='chatroomName' value={chatroomName} placeholder="Enter your chatroom's name here" required onChange={this.handleChange} />
+						<button type='submit'>Create Chatroom</button>
+					</form>
+				</div>
+			</div>
+		)
 
 		if (errorMsg) {
 			return (
@@ -145,17 +162,7 @@ class ChatroomContainer extends Component {
 						<h2 className='chatroom-title'>Hi {this.props.currentUser.username} !</h2>
 						<p>You are not a member in any chatroom </p>
 					</div>
-
-					<div className='create-chatroom'>
-						<div className='create-chatroom-title'>
-							<h2>You can create a chatroom here and invite your friends</h2>
-						</div>
-						<div>
-							<form>
-								<input type='text' name='chatroom-name' placeholder="Enter your chatroom's name here" required />
-							</form>
-						</div>
-					</div>
+					{form}
 				</div>
 			)
 		} else {
@@ -181,6 +188,7 @@ class ChatroomContainer extends Component {
 									<span
 										className='chatroom-leave'
 										onClick={e => {
+											e.preventDefault()
 											this.removeFromChat(this.props.currentUser.id, chatroom.id, e)
 										}}
 									>
@@ -191,21 +199,7 @@ class ChatroomContainer extends Component {
 						})}
 					</div>
 
-					<div className='create-chatroom'>
-						<div className='create-chatroom-title'>
-							<h2>You can create a chatroom here and invite your friends</h2>
-						</div>
-						<div>
-							<form onSubmit={
-								e => {
-									e.preventDefault()
-									this.createChatroom(this.state)
-								}
-							}>
-								<input type='text' name='chatroomName' value={chatroomName} placeholder="Enter your chatroom's name here" required onChange={this.handleChange} />
-							</form>
-						</div>
-					</div>
+					{form}
 				</div>
 			)
 		}
