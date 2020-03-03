@@ -111,10 +111,6 @@
 	margin-bottom: 1em;
 }
 
-.create-chatroom form button {
-	transition: all 0.3s ease;
-}
-
 .create-chatroom form button:hover {
 	background-color: rgb(243, 242, 242);
 	box-shadow: 1px 2px 8px rgb(243, 243, 243);

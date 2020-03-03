@@ -3,6 +3,12 @@
 * {
 	font-family: Roboto;
 }
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
 html,
 body {
 	margin: 0;

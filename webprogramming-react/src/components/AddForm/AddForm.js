@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import '../Contacts/Contacts.css'
+import { Link } from 'react-router-dom'
 
 class AddForm extends Component {
 	constructor(props) {
@@ -15,27 +16,36 @@ class AddForm extends Component {
 	render() {
 		return (
 			<div className='new-contact-div-contact'>
-				{this.props.users.map(user => (
-					<div className='contact' key={user.username}>
-						<div className='contact-avatar'>
-							<span></span>
-						</div>
+				<div className='contact-scroll-div'>
+					{Array.isArray(this.props.users) && this.props.users.length > 0 ? (
+						this.props.users.map(user => (
+							<div className='contact' key={user.username}>
+								<div className='contact-avatar'>
+									<span></span>
+								</div>
 
-						<div className='contact-info'>
-							<p>{user.name} </p>
+								<div className='contact-info'>
+									<p>{user.name} </p>
 
-							<div className='contact-info_hide'>
-								<p>{user.username} </p>
-								<p>{user.address} </p>
-								<p>{user.email} </p>
+									<div className='contact-info_hide'>
+										<p>{user.username} </p>
+										<p>{user.address} </p>
+										<p>{user.email} </p>
+									</div>
+								</div>
+
+								<div onClick={e => this.addFriend(user.id)} className='contact-add'>
+									<span className='contact-addition'></span>
+								</div>
 							</div>
+						))
+					) : (
+						<div>
+							<h2>to Add someone to this chat you need friends...</h2>
+							<Link to='/contacts' />
 						</div>
-
-						<div onClick={e => this.addFriend(user.id)} className='contact-add'>
-							<span className='contact-addition'></span>
-						</div>
-					</div>
-				))}
+					)}
+				</div>
 			</div>
 		)
 	}

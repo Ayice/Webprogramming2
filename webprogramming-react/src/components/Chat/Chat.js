@@ -93,7 +93,6 @@ class Chat extends Component {
 			})
 			.then(function(data) {
 				console.log('Message successfully sent!', data)
-				
 			})
 			.catch(function(error) {
 				console.error('Error sending message: ', error)
@@ -124,7 +123,7 @@ class Chat extends Component {
 		// if (this.state.toDashboard)
 
 		return (
-			<div>
+			<div className='chatroom-container'>
 				<div id='chat-section'>
 					<div className='chat-header'>
 						<h2>{this.state.currentChatroom.name}</h2>
@@ -158,9 +157,10 @@ class Chat extends Component {
 						</button>
 					</form>
 				</div>
-				´
-				<div>
+
+				<div className='chat-actions'>
 					<button
+						className='btn-danger'
 						onClick={e => {
 							e.preventDefault()
 							this.removeFromChat(this.props.currentUser.id, currentChatroom.id)
@@ -168,8 +168,9 @@ class Chat extends Component {
 					>
 						Leave this chat
 					</button>
+					<h2>Add a user to the chat</h2>
+					<AddForm handleSubmit={this.handleSubmit} users={this.props.currentUser.friends} />
 				</div>
-				<AddForm handleSubmit={this.handleSubmit} users={this.props.allUsers} />
 			</div>
 		)
 	}
