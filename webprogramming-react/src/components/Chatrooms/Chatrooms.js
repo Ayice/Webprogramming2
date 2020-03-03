@@ -11,7 +11,8 @@ class ChatroomContainer extends Component {
 
 		this.state = {
 			chatrooms: [],
-			errorMsg: false
+			errorMsg: false,
+			chatroomName: ''
 		}
 	}
 
@@ -96,38 +97,46 @@ class ChatroomContainer extends Component {
 			})
 	}
 
-	// Create chatroom and add user to chatroom
+	handleChange = event => {
+		const { name, value } = event.target
+		this.setState({
+			[name]: value
+		})
+	}
 
-	// Genbrug Anders' møgfede kode
-	// addUser = new chatroom id => {
-	// 	let currentUserId = this.state.currentUser.id
-	// 	fire
-	// 		.collection('user-user')
-	// 		.doc(currentUserId)
-	// 		.set(
-	// 			{
-	// 				[friend]: true
-	// 			},
-	// 			{ merge: true }
-	// 		)
-	// 		.then(() => {
-	// 			fire
-	// 				.collection('user-user')
-	// 				.doc(friend)
-	// 				.set(
-	// 					{
-	// 						[currentUserId]: true
-	// 					},
-	// 					{ merge: true }
-	// 				)
-	// 		})
-	// 		.then(() => {
-	// 			console.log('Yes we are now friends ! ')
-	// 		})
-	// }
+	createChatroom = chatroom => {
+
+		let currentUserID = this.props.currentUser.id
+
+		fire
+			.collection('chatrooms')
+			.add({
+				name: this.state.chatroomName
+			})
+			.then( doc => {
+				console.log(doc.id)
+				fire
+					.collection('user-rooms')
+					.doc(currentUserID)
+					.set(
+						{
+							[doc.id]: true
+						},
+						{ merge: true }
+					)
+			})
+			.then(() => {
+				console.log('You succesfully created a new chatroom!')
+				this.getChatrooms(this.props)
+			})
+		this.setState({
+			chatroomName: ''
+		})
+
+	}
 
 	render() {
-		const { chatrooms, errorMsg } = this.state
+		const { chatroomName, chatrooms, errorMsg } = this.state
 
 		if (errorMsg) {
 			return (
@@ -187,8 +196,13 @@ class ChatroomContainer extends Component {
 							<h2>You can create a chatroom here and invite your friends</h2>
 						</div>
 						<div>
-							<form>
-								<input type='text' name='chatroom-name' placeholder="Enter your chatroom's name here" required />
+							<form onSubmit={
+								e => {
+									e.preventDefault()
+									this.createChatroom(this.state)
+								}
+							}>
+								<input type='text' name='chatroomName' value={chatroomName} placeholder="Enter your chatroom's name here" required onChange={this.handleChange} />
 							</form>
 						</div>
 					</div>
