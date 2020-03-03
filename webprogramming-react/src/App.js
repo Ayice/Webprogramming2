@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { fire, storage } from './firebase'
 import firebase from 'firebase'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
-
 import './App.css'
 import Navbar from './components/Navbar/Navbar'
 import LoginForm from './components/Login/Login'
@@ -165,12 +164,22 @@ class App extends Component {
 			})
 	}
 
-	removeUser = () => {
-		const user = firebase.auth().currentUser;
 
-		user.delete().then(function() {
-		alert('Thanos snapped his fingers and your ass is dust')
-		}).catch(function(error) {
+	removeUser = () => {
+		const user = firebase.auth().currentUser
+		const curUserId = this.state.currentUser.id
+		// console.log(user)
+		fire
+			.collection('users')
+			.doc(curUserId)
+			.delete()
+			.then(() => {
+				user.delete()
+			})
+			.then(() => {
+				alert('Thanos snapped his fingers and your ass is dust')
+			})
+		.catch((error) => {
 		console.log('you done goofed')
 		});
 	}

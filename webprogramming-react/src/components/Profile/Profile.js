@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './Profile.css';
-import { fire, storage } from '../../firebase'
-import firebase from 'firebase'
 
 class Profile extends Component {
 	constructor(props) {
@@ -12,11 +10,6 @@ class Profile extends Component {
 		}
 	}
 
-	componentDidMount() {
-		setTimeout(() => {
-			console.log(this.props.currentUser)
-		}, 1000)
-	}
 	removeUser = () => {
 		this.props.removeUser()
 	}
@@ -67,7 +60,7 @@ class Profile extends Component {
 					<div className="buttonContainer">
 						<button className="saveButton" type="submit">Save Changes</button>
 						<button className="manageContactsButton" type="button">Manage Contacts</button>
-						<button onClick={() => this.removeUser()} className="deleteAccountButton" type="submit">Delete Account</button>
+						<button onClick={(e) => {e.preventDefault(); this.removeUser()}} className="deleteAccountButton" type="submit">Delete Account</button>
 					</div>
 				</form>
 				
