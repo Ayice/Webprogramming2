@@ -52,6 +52,11 @@ class App extends Component {
 					.catch(err => {
 						alert(err)
 					})
+			} else {
+				this.setState({
+					currentUser: {},
+					isLoggedIn: false
+				})
 			}
 		})
 
