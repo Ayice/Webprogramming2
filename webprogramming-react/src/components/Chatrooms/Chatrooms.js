@@ -80,6 +80,36 @@ class ChatroomContainer extends Component {
 			})
 	}
 
+	// Create chatroom and add user to chatroom
+
+	// Genbrug Anders' møgfede kode
+	// addUser = new chatroom id => {
+	// 	let currentUserId = this.state.currentUser.id
+	// 	fire
+	// 		.collection('user-user')
+	// 		.doc(currentUserId)
+	// 		.set(
+	// 			{
+	// 				[friend]: true
+	// 			},
+	// 			{ merge: true }
+	// 		)
+	// 		.then(() => {
+	// 			fire
+	// 				.collection('user-user')
+	// 				.doc(friend)
+	// 				.set(
+	// 					{
+	// 						[currentUserId]: true
+	// 					},
+	// 					{ merge: true }
+	// 				)
+	// 		})
+	// 		.then(() => {
+	// 			console.log('Yes we are now friends ! ')
+	// 		})
+	// }
+
 	render() {
 		const { chatrooms, errorMsg } = this.state
 

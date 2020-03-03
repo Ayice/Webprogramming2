@@ -47,7 +47,7 @@ class Chat extends Component {
 						let fetchedMsgs = []
 						doc.forEach(msg => {
 							fetchedMsgs.push(msg.data())
-							console.log(fetchedMsgs.sort((a, b) => a.compareTimestamp > b.compareTimestamp))
+							// console.log(fetchedMsgs.sort((a, b) => a.compareTimestamp > b.compareTimestamp))
 							// fetchedMsgs.compareTimestamp.sort((a, b) => a - b)
 							this.setState({
 								messages: fetchedMsgs
@@ -86,13 +86,14 @@ class Chat extends Component {
 				timestamp: timestamp,
 				compareTimestamp: firebase.firestore.Timestamp.now().toMillis()
 			})
-			.then(function() {
-				console.log('Message successfully sent!')
+			.then(function(data) {
+				console.log('Message successfully sent!', data)
+				
 			})
 			.catch(function(error) {
 				console.error('Error sending message: ', error)
 			})
-		console.log(this.state.text, this.state.currentUser.username, timestamp)
+		// console.log(this.state.text, this.state.currentUser.username, timestamp)
 		this.setState({
 			text: ''
 		})
