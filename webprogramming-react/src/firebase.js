@@ -1,3 +1,4 @@
+// Firebase config
 import firebase from 'firebase'
 
 var firebaseConfig = {
