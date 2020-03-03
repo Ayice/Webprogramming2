@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './Contacts.css'
-import AddForm from './AddForm'
+import AddForm from '../AddForm/AddForm'
 
 class Contacts extends Component {
 	constructor(props) {
@@ -30,7 +30,7 @@ class Contacts extends Component {
 					</div>
 
 					<div className='contacts-div_contacts'>
-						{this.props.currentUser.friends ? (
+						{Array.isArray(this.props.currentUser.friends) && this.props.currentUser.friends.length > 0 ? (
 							this.props.currentUser.friends.map(x => (
 								<div className='contact' key={x.username}>
 									<div className='contact-avatar'>

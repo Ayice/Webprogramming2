@@ -33,11 +33,7 @@ class Navlist extends Component {
 				{ name: 'Profile', path: '/profile' },
 				{ name: 'Dashboard', path: '/dashboard' }
 			]
-			button = (
-				<a href='' onClick={this.handleLogOut}>
-					Log Out
-				</a>
-			)
+			button = <button onClick={this.handleLogOut}>Log Out</button>
 		} else {
 			list = [
 				{ name: 'Home', path: '/' },
