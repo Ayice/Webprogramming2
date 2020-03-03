@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import fire from '../../firebase'
+import { fire } from '../../firebase'
 import firebase from 'firebase'
 import { Link } from 'react-router-dom'
 // import firebase from 'firebase'
@@ -30,7 +30,7 @@ class ChatroomContainer extends Component {
 	getChatrooms(nextProps) {
 		let chatrooms = []
 		let chatRoomIds = []
-		let members = []
+		// let members = []
 		fire
 			.collection('user-rooms')
 			.doc(nextProps.currentUser.id)
@@ -51,21 +51,21 @@ class ChatroomContainer extends Component {
 						.then(chatRoomData => {
 							let data = { id: chatRoomData.id, ...chatRoomData.data() }
 
-							if (data.members.length > 0) {
-								data.members.forEach(element => {
-									members = []
-									element.get().then(doc => {
-										// console.log(doc.data())
-										members.push({ name: doc.data().name })
-									})
-								})
-								data.members = members
-								chatrooms.push({ ...data })
-							} else {
-								// console.log(data)
-								// console.log(chatrooms)
-								chatrooms.push({ ...data })
-							}
+							// if (data.members.length > 0) {
+							// 	data.members.forEach(element => {
+							// 		members = []
+							// 		element.get().then(doc => {
+							// 			// console.log(doc.data())
+							// 			members.push({ name: doc.data().name })
+							// 		})
+							// 	})
+							// 	data.members = members
+							// 	chatrooms.push({ ...data })
+							// } else {
+							// console.log(data)
+							// console.log(chatrooms)
+							// }
+							chatrooms.push({ ...data })
 
 							this.setState({
 								chatrooms: chatrooms

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import fire from './firebase'
+import { fire, storage } from './firebase'
 import firebase from 'firebase'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 
@@ -21,10 +21,18 @@ class App extends Component {
 			currentUser: {},
 			allUsers: [],
 			isLoggedIn: false
+			// testImg: ''
 		}
 	}
 
 	componentDidMount() {
+		// const storageRef = storage.ref()
+		// const userImgRef = storageRef.child('users')
+		// const userAvatar = userImgRef.child('2018-05-14 21.22.03.jpg')
+
+		// this.setState({
+		// 	testImg: userAvatar
+		// })
 		firebase.auth().onAuthStateChanged(user => {
 			if (user) {
 				fire
@@ -171,8 +179,10 @@ class App extends Component {
 	}
 
 	render() {
+		// const { testImg } = this.state
 		return (
 			<div className='App'>
+				{/* <img src={testImg} alt='hej' /> */}
 				<Router basename={'/react-exam'}>
 					<Navbar currentUser={this.state.currentUser} />
 					<Switch>
