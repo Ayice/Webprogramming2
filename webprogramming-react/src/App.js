@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { fire, storage } from './firebase'
 import firebase from 'firebase'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
-
 import './App.css'
 import Navbar from './components/Navbar/Navbar'
 import LoginForm from './components/Login/Login'
@@ -165,6 +164,26 @@ class App extends Component {
 			})
 	}
 
+
+	removeUser = () => {
+		const user = firebase.auth().currentUser
+		const curUserId = this.state.currentUser.id
+		// console.log(user)
+		fire
+			.collection('users')
+			.doc(curUserId)
+			.delete()
+			.then(() => {
+				user.delete()
+			})
+			.then(() => {
+				alert('Thanos snapped his fingers and your ass is dust')
+			})
+		.catch((error) => {
+		console.log('you done goofed')
+		});
+	}
+
 	addToChat = (userId, chatroomId) => {
 		fire
 			.collection('user-rooms')
@@ -193,8 +212,7 @@ class App extends Component {
 					<Switch>
 						<Route path='/chatrooms' exact render={props => (this.state.isLoggedIn ? <ChatroomContainer {...props} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
 						<Route path='/chatrooms/chat/:id' exact render={props => (this.state.isLoggedIn ? <Chat {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} addToChat={this.addToChat} /> : <Redirect to='/' />)} />
-						<Route path='/profile' exact render={props => (this.state.isLoggedIn ? <Profile {...props} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
-						11
+						<Route path='/profile' exact render={props => (this.state.isLoggedIn ? <Profile {...props} removeUser={this.removeUser} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
 						<Route path='/dashboard' render={props => (this.state.isLoggedIn ? <Dashboard {...props} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
 						<Route path='/contacts' render={props => (this.state.isLoggedIn ? <Contacts {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addUser} handleRemove={this.handleRemove} /> : <Redirect to='/' />)} />
 						<Route path='/signup' component={SignUpForm} render={props => (!this.state.isLoggedIn ? <SignUpForm /> : <Redirect to='/dashboard' />)} />
