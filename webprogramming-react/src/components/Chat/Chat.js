@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { fire } from '../../firebase'
 import firebase from 'firebase'
 import 'firebase/auth'
-import { Redirect } from 'react-router-dom'
 
 import './Chat.css'
 
@@ -28,7 +27,6 @@ class Chat extends Component {
 	componentDidMount() {
 		// console.log(firebase.firestore.Timestamp.now().toMillis())
 		// console.log(this.state)
-		this.scrollToBottom()
 
 		fire
 			.collection('chatrooms')
@@ -54,13 +52,11 @@ class Chat extends Component {
 								messages: fetchedMsgs
 							})
 						})
+						this.scrollToBottom()
+
 						// console.log(this.state.messages)
 					})
 			})
-	}
-
-	componentDidUpdate() {
-		this.scrollToBottom()
 	}
 
 	handleChange = event => {
