@@ -27,7 +27,6 @@ class Chat extends Component {
 	componentDidMount() {
 		// console.log(firebase.firestore.Timestamp.now().toMillis())
 		// console.log(this.state)
-		this.scrollToBottom()
 
 		fire
 			.collection('chatrooms')
@@ -53,13 +52,11 @@ class Chat extends Component {
 								messages: fetchedMsgs
 							})
 						})
+						this.scrollToBottom()
+
 						// console.log(this.state.messages)
 					})
 			})
-	}
-
-	componentDidUpdate() {
-		this.scrollToBottom()
 	}
 
 	handleChange = event => {
