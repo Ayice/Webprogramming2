@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
-import fire from '../../firebase'
+import { fire } from '../../firebase'
 import './SignUp.css'
 
 export default class SignUpForm extends Component {
