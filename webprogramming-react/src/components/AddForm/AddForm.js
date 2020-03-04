@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import '../Contacts/Contacts.css'
 import { Link } from 'react-router-dom'
+import './AddForm.css'
 
 class AddForm extends Component {
 	constructor(props) {
@@ -10,7 +11,11 @@ class AddForm extends Component {
 	}
 
 	addFriend(id) {
-		this.props.handleSubmit(id)
+		this.props.addUser(id)
+	}
+
+	removeFriend(id) {
+		this.props.removeUser(id)
 	}
 
 	render() {
@@ -34,15 +39,20 @@ class AddForm extends Component {
 									</div>
 								</div>
 
-								<div onClick={e => this.addFriend(user.id)} className='contact-add'>
-									<span className='contact-addition'></span>
+								<div
+									onClick={e => {
+										this.props.delete ? this.removeFriend(user.id) : this.addFriend(user.id)
+									}}
+									className={this.props.delete ? 'contact-delete' : 'contact-add'}
+								>
+									<span className={this.props.delete ? 'contact-cross' : 'contact-addition'}></span>
 								</div>
 							</div>
 						))
 					) : (
 						<div>
 							<h2>to Add someone to this chat you need friends...</h2>
-							<Link to='/contacts' />
+							<Link to='/contacts'> Add friends here</Link>
 						</div>
 					)}
 				</div>
