@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import './Profile.css';
+import React, { Component } from 'react'
+import './Profile.css'
 import { Link } from 'react-router-dom'
 
 class Profile extends Component {
@@ -7,23 +7,12 @@ class Profile extends Component {
 		super(props)
 
 		this.state = {
-			currentUser: props.currentUser,
-			username: '',
-			address: '',
-			email: '',
-			password: '',
-			newpassword: ''
+			// currentUser: props.currentUser,
+			form: { ...this.props.currentUser, newPassword: '' }
 		}
-	}
 
-// constructor(props){
-// 	super(props);
-// 	this.state = { username: '', password: '' };
-//   }
- 
-//   handleChange = ({ target }) => {
-// 	 this.setState({ [target.name]: target.value });
-//   };
+		this.handleChange = this.handleChange.bind(this)
+	}
 
 	editUser = () => {
 		this.props.editUser()
@@ -33,58 +22,77 @@ class Profile extends Component {
 		this.props.removeUser()
 	}
 
-	handleChange = ({ target }) => {
+	handleChange = event => {
+		const { name, value } = event.target
 		this.setState({
-			[target.name]: target.value
-		});
+			form: { ...this.state.form, [name]: value }
+		})
 	}
 
 	render() {
+		const { form } = this.state
 		return (
-			<div className="profileContainer">
+			<div className='profileContainer'>
 				<h1>{this.props.currentUser.name}</h1>
-				<form className="profileForm">
-					
-					<div className="profileFormfield">
+				<form className='profileForm'>
+					<div className='profileFormfield'>
 						<label>Name</label>
-						<input value={this.props.currentUser.name} type="text" onChange={this.handleChange}/>
+						<input value={form.name} type='text' name='name' onChange={this.handleChange} />
 					</div>
 
-					<div className="profileFormfield">
+					<div className='profileFormfield'>
 						<label>Address</label>
-						<input value={this.props.currentUser.address} type="text" onChange={this.handleChange}/>
+						<input value={form.address} type='text' name='address' onChange={this.handleChange} />
 					</div>
 
-					<div className="profileFormfield">
+					<div className='profileFormfield'>
 						<label>E-mail</label>
-						<input value={this.props.currentUser.email} type="email" onChange={this.handleChange}/>
+						<input value={form.email} type='email' name='email' onChange={this.handleChange} />
 					</div>
 
-					<div className="profileFormfield">
+					<div className='profileFormfield'>
 						<label>Username</label>
-						<input value={this.props.currentUser.username} type="text" onChange={this.handleChange}/>
+						<input value={form.username} type='text' name='username' onChange={this.handleChange} />
 					</div>
 
-					<div className="profileFormfield">
+					<div className='profileFormfield'>
 						<label>Current Password</label>
-						<input value={this.props.currentUser.password} type="password" onChange={this.handleChange}/>
+						<input value={form.password} type='password' name='password' onChange={this.handleChange} />
 					</div>
 
-					<div className="profileFormfield">
+					<div className='profileFormfield'>
 						<label>New Password</label>
-						<input value={this.props.currentUser.newpassword} placeholder="Enter new password" type="password" onChange={this.handleChange}/>
+						<input name='newPassword' placeholder='Enter your new Password' type='password' onChange={this.handleChange} />
 					</div>
 
-					<div className="buttonContainer">
-						<button onClick={(e) => {e.preventDefault(); this.editUser()}} className="saveButton" type="submit">Save Changes</button>
-						<Link to='/contacts'>
-							<button renderAs='button'>
-								<span>Manage Contacts</span>
-							</button>
-						</Link>
-						<button onClick={(e) => {e.preventDefault(); this.removeUser()}} className="deleteAccountButton" type="submit">Delete Account</button>
+					<div className='buttonContainer'>
+						<button
+							onClick={e => {
+								e.preventDefault()
+								this.editUser()
+							}}
+							className='saveButton'
+							type='submit'
+						>
+							Save Changes
+						</button>
 					</div>
 				</form>
+				<Link to='/contacts'>
+					<button>
+						<span>Manage Contacts</span>
+					</button>
+				</Link>
+				<button
+					onClick={e => {
+						e.preventDefault()
+						this.removeUser()
+					}}
+					className='deleteAccountButton'
+					type='submit'
+				>
+					Delete Account
+				</button>
 			</div>
 		)
 	}
