@@ -6,6 +6,9 @@ import './AddForm.css'
 class AddForm extends Component {
 	constructor(props) {
 		super(props)
+		this.state = {
+			showInfo: false
+		}
 
 		this.addFriend = this.addFriend.bind(this)
 	}
@@ -18,13 +21,23 @@ class AddForm extends Component {
 		this.props.removeUser(id)
 	}
 
+	showHiddenInfo(username, e) {
+		console.log(e.target)
+		e.target.classList.toggle('clicked')
+		console.log(username)
+		this.setState({
+			showInfo: !this.state.showInfo
+		})
+	}
+
 	render() {
+		const { showInfo } = this.state
 		return (
 			<div className='new-contact-div-contact'>
 				<div className='contact-scroll-div'>
 					{Array.isArray(this.props.users) && this.props.users.length > 0 ? (
 						this.props.users.map(user => (
-							<div className='contact' key={user.username}>
+							<div onClick={e => this.showHiddenInfo(user.username, e)} className='contact' key={user.username}>
 								<div className='contact-avatar'>
 									<span></span>
 								</div>
