@@ -164,6 +164,24 @@ class App extends Component {
 			})
 	}
 
+	editUser = () => {
+		const user = firebase.auth().currentUser
+
+		fire
+			.collection('users')
+			.doc(user)
+			.set({
+				[user]: true
+				},
+				{ merge: true }
+			)
+			.then(() => {
+				alert('User information updated')
+			})
+			.catch((error) => {
+				console.log('you done goofed')
+				});
+	}
 
 	removeUser = () => {
 		const user = firebase.auth().currentUser
