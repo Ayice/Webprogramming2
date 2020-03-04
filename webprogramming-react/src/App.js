@@ -85,8 +85,6 @@ class App extends Component {
 			.doc(this.state.currentUser.id)
 			.onSnapshot(doc => {
 				if (doc.data()) {
-					console.log(doc.data())
-
 					friendId = Object.keys(doc.data())
 					this.fetchFriendData(friendId)
 				}
@@ -96,7 +94,6 @@ class App extends Component {
 	fetchFriendData(friendArray) {
 		let friendDataArray = []
 		if (friendArray.length > 0) {
-			console.log(friendArray, 'FriendData')
 			friendArray.forEach(friendId => {
 				// console.log(element)
 				fire
@@ -104,7 +101,6 @@ class App extends Component {
 					.doc(friendId)
 					.get()
 					.then(friendData => {
-						console.log(friendData.data())
 						friendDataArray.push({ id: friendData.id, ...friendData.data() })
 					})
 					.then(() => {
