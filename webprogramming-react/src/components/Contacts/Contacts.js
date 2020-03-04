@@ -10,7 +10,7 @@ class Contacts extends Component {
 		}
 	}
 
-	handleSubmit = friend => {
+	addNewContact = friend => {
 		this.props.handleSubmit(friend)
 	}
 
@@ -29,33 +29,11 @@ class Contacts extends Component {
 						<p>In here u can see your contacts: </p>
 					</div>
 
-					<div className='contacts-div_contacts'>
-						{Array.isArray(this.props.currentUser.friends) && this.props.currentUser.friends.length > 0 ? (
-							this.props.currentUser.friends.map(x => (
-								<div className='contact' key={x.username}>
-									<div className='contact-avatar'>
-										<span></span>
-									</div>
-
-									<div className='contact-info'>
-										<p>{x.name} </p>
-
-										<div className='contact-info_hide'>
-											<p>{x.username} </p>
-											<p>{x.address} </p>
-											<p>{x.email} </p>
-										</div>
-									</div>
-
-									<div onClick={() => this.removeFriend(x.id)} className='contact-delete'>
-										<span className='contact-cross'></span>
-									</div>
-								</div>
-							))
-						) : (
-							<h2>Unfortunately you have no friends... YET!!! </h2>
-						)}
-					</div>
+					{Array.isArray(this.props.currentUser.friends) && this.props.currentUser.friends.length > 0 ? (
+						<AddForm delete={true} removeUser={this.removeFriend} users={this.props.currentUser.friends} />
+					) : (
+						<h2>Unfortunately you have no friends... YET!!! </h2>
+					)}
 				</div>
 
 				<div className='new-contact-div'>
@@ -65,7 +43,7 @@ class Contacts extends Component {
 						<button onClick={() => this.setState({ addNewContact: !addNewContact })}> Get friends</button>
 					</div>
 
-					{addNewContact ? <AddForm handleSubmit={this.handleSubmit} users={this.props.allUsers} /> : ''}
+					{addNewContact ? <AddForm addUser={this.addNewContact} users={this.props.allUsers} delete={false} /> : ''}
 				</div>
 			</div>
 		)

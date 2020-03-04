@@ -20,9 +20,9 @@ class Chat extends Component {
 		this.sendMessage = this.sendMessage.bind(this)
 	}
 
-	scrollToBottom = () => {
-		this.messagesEnd.scrollIntoView({ behavior: 'smooth' })
-	}
+	// scrollToBottom = () => {
+	// 	this.messagesEnd.scrollIntoView({ behavior: 'smooth' })
+	// }
 
 	componentDidMount() {
 		// console.log(firebase.firestore.Timestamp.now().toMillis())
@@ -52,7 +52,7 @@ class Chat extends Component {
 								messages: fetchedMsgs
 							})
 						})
-						this.scrollToBottom()
+						// this.scrollToBottom()
 
 						// console.log(this.state.messages)
 					})
@@ -66,7 +66,7 @@ class Chat extends Component {
 		})
 	}
 
-	handleSubmit = friend => {
+	addToChat = friend => {
 		this.props.addToChat(friend, this.state.currentChatroom.id)
 	}
 
@@ -137,12 +137,12 @@ class Chat extends Component {
 								</div>
 							)
 						})}
-						<div
+						{/* <div
 							style={{ float: 'left', clear: 'both' }}
 							ref={el => {
 								this.messagesEnd = el
 							}}
-						></div>
+						></div> */}
 					</div>
 
 					<form
@@ -169,7 +169,7 @@ class Chat extends Component {
 						Leave this chat
 					</button>
 					<h2>Add a user to the chat</h2>
-					<AddForm handleSubmit={this.handleSubmit} users={this.props.currentUser.friends} />
+					<AddForm addUser={this.addToChat} users={this.props.currentUser.friends} delete={false} />
 				</div>
 			</div>
 		)
