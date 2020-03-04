@@ -7,21 +7,22 @@ form label {
 	width: 20%;
 	align-items: center;
 }
+
 form input {
 	display: block;
 	width: 80%;
 	padding: 2%;
 }
+
 form input:focus {
 	outline: none;
 }
+
 form button {
 	margin: 0;
 	border: none;
 	/* color: white; */
 	height: 45px;
-}
-form button:hover {
 	cursor: pointer;
 }
 
