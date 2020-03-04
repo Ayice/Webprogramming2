@@ -58,42 +58,7 @@ class App extends Component {
 				})
 			}
 		})
-
 		this.fetchUsers()
-	}
-
-	fetchFriends() {
-		let friendId = []
-		fire
-			.collection('user-user')
-			.doc(this.state.currentUser.id)
-			.onSnapshot(doc => {
-				if (doc.data()) {
-					// console.log(doc.data())
-
-					friendId = Object.keys(doc.data())
-					this.fetchFriendData(friendId)
-				}
-			})
-	}
-
-	fetchFriendData(friendArray) {
-		let friendDataArray = []
-		friendArray.forEach(friendId => {
-			// console.log(element)
-			fire
-				.collection('users')
-				.doc(friendId)
-				.get()
-				.then(friendData => {
-					friendDataArray.push({ id: friendData.id, ...friendData.data() })
-				})
-				.then(() => {
-					this.setState({
-						currentUser: { ...this.state.currentUser, friends: friendDataArray }
-					})
-				})
-		})
 	}
 
 	fetchUsers() {
@@ -111,6 +76,48 @@ class App extends Component {
 					allUsers: allUsers
 				})
 			})
+	}
+
+	fetchFriends() {
+		let friendId = []
+		fire
+			.collection('user-user')
+			.doc(this.state.currentUser.id)
+			.onSnapshot(doc => {
+				if (doc.data()) {
+					console.log(doc.data())
+
+					friendId = Object.keys(doc.data())
+					this.fetchFriendData(friendId)
+				}
+			})
+	}
+
+	fetchFriendData(friendArray) {
+		let friendDataArray = []
+		if (friendArray.length > 0) {
+			console.log(friendArray, 'FriendData')
+			friendArray.forEach(friendId => {
+				// console.log(element)
+				fire
+					.collection('users')
+					.doc(friendId)
+					.get()
+					.then(friendData => {
+						console.log(friendData.data())
+						friendDataArray.push({ id: friendData.id, ...friendData.data() })
+					})
+					.then(() => {
+						this.setState({
+							currentUser: { ...this.state.currentUser, friends: friendDataArray }
+						})
+					})
+			})
+		} else {
+			this.setState({
+				currentUser: { ...this.state.currentUser, friends: [] }
+			})
+		}
 	}
 
 	addUser = friend => {
@@ -158,12 +165,12 @@ class App extends Component {
 			})
 			.then(() => {
 				alert('You just deleted a friend... Hope you will be friends again')
+				this.fetchFriends()
 			})
 			.catch(err => {
 				console.log(err, 'What! an error ?')
 			})
 	}
-
 
 	removeUser = () => {
 		const user = firebase.auth().currentUser
@@ -179,9 +186,9 @@ class App extends Component {
 			.then(() => {
 				alert('Thanos snapped his fingers and your ass is dust')
 			})
-		.catch((error) => {
-		console.log('you done goofed')
-		});
+			.catch(error => {
+				console.log('you done goofed')
+			})
 	}
 
 	addToChat = (userId, chatroomId) => {
@@ -211,10 +218,23 @@ class App extends Component {
 					<Navbar currentUser={this.state.currentUser} />
 					<Switch>
 						<Route path='/chatrooms' exact render={props => (this.state.isLoggedIn ? <ChatroomContainer {...props} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
-						<Route path='/chatrooms/chat/:id' exact render={props => (this.state.isLoggedIn ? <Chat {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} addToChat={this.addToChat} /> : <Redirect to='/' />)} />
+						<Route
+							path='/chatrooms/chat/:id'
+							exact
+							render={props => (this.state.isLoggedIn ? <Chat {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} addToChat={this.addToChat} /> : <Redirect to='/' />)}
+						/>
 						<Route path='/profile' exact render={props => (this.state.isLoggedIn ? <Profile {...props} removeUser={this.removeUser} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
 						<Route path='/dashboard' render={props => (this.state.isLoggedIn ? <Dashboard {...props} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
-						<Route path='/contacts' render={props => (this.state.isLoggedIn ? <Contacts {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addUser} handleRemove={this.handleRemove} /> : <Redirect to='/' />)} />
+						<Route
+							path='/contacts'
+							render={props =>
+								this.state.isLoggedIn ? (
+									<Contacts {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addUser} handleRemove={this.handleRemove} />
+								) : (
+									<Redirect to='/' />
+								)
+							}
+						/>
 						<Route path='/signup' component={SignUpForm} render={props => (!this.state.isLoggedIn ? <SignUpForm /> : <Redirect to='/dashboard' />)} />
 						<Route path='/' exact render={props => (!this.state.isLoggedIn ? <LoginForm /> : <Redirect to='/dashboard' />)} />
 					</Switch>
