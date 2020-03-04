@@ -20,6 +20,11 @@
 	align-items: center;
 }
 
+.contacts-div_contacts .contact,
+.new-contact-div-contact .contact {
+	width: 80%;
+}
+
 .new-contact-title {
 	margin-bottom: 1em;
 }
