@@ -10,25 +10,26 @@ class Profile extends Component {
 			// currentUser: props.currentUser,
 			form: { ...this.props.currentUser, newPassword: '' }
 		}
-
 		this.handleChange = this.handleChange.bind(this)
 	}
 
-	editUser = () => {
+	editUser = event => {
+		event.preventDefault()
+
 		let data = { ...this.state.form }
 		data = {
 			...data,
 			friends: [],
 			id: ''
 		}
+
 		for (const key in data) {
-			if (data[key] == '') {
-				console.log(key + ' is blank. Deleting it')
+			if (data[key] === '') {
 				delete data[key]
 			}
 		}
 		console.log(data)
-		// this.props.editUser()
+		this.props.editUser(data)
 	}
 
 	removeUser = () => {
@@ -47,7 +48,7 @@ class Profile extends Component {
 		return (
 			<div className='profileContainer'>
 				<h1>{this.props.currentUser.name}</h1>
-				<form className='profileForm'>
+				<form onSubmit={this.editUser} className='profileForm'>
 					<div className='profileFormfield'>
 						<label>Name</label>
 						<input value={form.name} type='text' name='name' onChange={this.handleChange} />
@@ -79,33 +80,28 @@ class Profile extends Component {
 					</div>
 
 					<div className='buttonContainer'>
-						<button
-							onClick={e => {
-								e.preventDefault()
-								this.editUser()
-							}}
-							className='saveButton'
-							type='submit'
-						>
+						<button name='submit' className='saveButton' type='submit'>
 							Save Changes
 						</button>
 					</div>
-				</form>
-				<Link to='/contacts'>
-					<button>
-						<span>Manage Contacts</span>
+
+					<Link to='/contacts'>
+						<button>
+							<span>Manage Contacts</span>
+						</button>
+					</Link>
+
+					<button
+						onClick={e => {
+							e.preventDefault()
+							this.removeUser()
+						}}
+						className='deleteAccountButton'
+						type='submit'
+					>
+						Delete Account
 					</button>
-				</Link>
-				<button
-					onClick={e => {
-						e.preventDefault()
-						this.removeUser()
-					}}
-					className='deleteAccountButton'
-					type='submit'
-				>
-					Delete Account
-				</button>
+				</form>
 			</div>
 		)
 	}

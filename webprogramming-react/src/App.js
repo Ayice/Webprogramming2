@@ -168,19 +168,34 @@ class App extends Component {
 			})
 	}
 
-	editUser = () => {
+	editUser = data => {
 		const user = firebase.auth().currentUser
-
+		console.log(data)
 		fire
 			.collection('users')
-			.doc(user)
+			.doc(this.state.currentUser.id)
 			.set(
 				{
-					[user]: true
+					...data
 				},
 				{ merge: true }
 			)
 			.then(() => {
+				let dataAuth = {}
+				for (const key in data) {
+					if (data.hasOwnProperty(key)) {
+						const element = data[key]
+					}
+				}
+
+				console.log(data)
+			})
+			.then(() => {
+				if (data.newPassword) {
+					user.updateProfile({
+						password: data.newPassword
+					})
+				}
 				alert('User information updated')
 			})
 			.catch(error => {
@@ -234,23 +249,10 @@ class App extends Component {
 					<Navbar currentUser={this.state.currentUser} />
 					<Switch>
 						<Route path='/chatrooms' exact render={props => (this.state.isLoggedIn ? <ChatroomContainer {...props} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
-						<Route
-							path='/chatrooms/chat/:id'
-							exact
-							render={props => (this.state.isLoggedIn ? <Chat {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} addToChat={this.addToChat} /> : <Redirect to='/' />)}
-						/>
+						<Route path='/chatrooms/chat/:id' exact render={props => (this.state.isLoggedIn ? <Chat {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} addToChat={this.addToChat} /> : <Redirect to='/' />)} />
 						<Route path='/profile' exact render={props => (this.state.isLoggedIn ? <Profile {...props} removeUser={this.removeUser} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
 						<Route path='/dashboard' render={props => (this.state.isLoggedIn ? <Dashboard {...props} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
-						<Route
-							path='/contacts'
-							render={props =>
-								this.state.isLoggedIn ? (
-									<Contacts {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addUser} handleRemove={this.handleRemove} />
-								) : (
-									<Redirect to='/' />
-								)
-							}
-						/>
+						<Route path='/contacts' render={props => (this.state.isLoggedIn ? <Contacts {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addUser} handleRemove={this.handleRemove} /> : <Redirect to='/' />)} />
 						<Route path='/signup' component={SignUpForm} render={props => (!this.state.isLoggedIn ? <SignUpForm /> : <Redirect to='/dashboard' />)} />
 						<Route path='/' exact render={props => (!this.state.isLoggedIn ? <LoginForm /> : <Redirect to='/dashboard' />)} />
 					</Switch>
