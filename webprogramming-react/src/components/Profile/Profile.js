@@ -15,7 +15,20 @@ class Profile extends Component {
 	}
 
 	editUser = () => {
-		this.props.editUser()
+		let data = { ...this.state.form }
+		data = {
+			...data,
+			friends: [],
+			id: ''
+		}
+		for (const key in data) {
+			if (data[key] == '') {
+				console.log(key + ' is blank. Deleting it')
+				delete data[key]
+			}
+		}
+		console.log(data)
+		// this.props.editUser()
 	}
 
 	removeUser = () => {
