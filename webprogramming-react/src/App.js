@@ -223,7 +223,7 @@ class App extends Component {
 				this.fetchCurrentUser(user)
 			})
 			.then(() => {
-				alert(this.state.msg)
+				alert('Updates were successfull! ')
 				console.log(this.state.msg)
 			})
 			.catch(error => {
@@ -269,7 +269,6 @@ class App extends Component {
 	}
 
 	render() {
-		// const { testImg } = this.state
 		return (
 			<div className='App'>
 				{/* <img src={testImg} alt='hej' /> */}
