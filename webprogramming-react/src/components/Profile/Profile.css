@@ -67,10 +67,3 @@ form button {
 .manageContactsButton:hover {
 	background-color: rgb(41, 107, 168);
 }
-.deleteAccountButton {
-	background-color: #e5503b;
-	transition: ease-in 0.25s;
-}
-.deleteAccountButton:hover {
-	background-color: rgb(192, 59, 42);
-}

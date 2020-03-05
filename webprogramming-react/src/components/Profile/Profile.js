@@ -95,7 +95,7 @@ class Profile extends Component {
 							e.preventDefault()
 							this.removeUser()
 						}}
-						className='deleteAccountButton'
+						className='btn-danger'
 						type='submit'
 					>
 						Delete Account

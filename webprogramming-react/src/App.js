@@ -177,57 +177,72 @@ class App extends Component {
 	editUser = data => {
 		const user = firebase.auth().currentUser
 		console.log(data)
-
 		fire
 			.collection('users')
-			.doc(this.state.currentUser.id)
-			.set(
-				{
-					...data,
-					newPassword: ''
-				},
-				{ merge: true }
-			)
-			.then(() => {
-				let dataAuth = {}
-				for (const key in data) {
-					if (key === 'address') {
-						delete data[key]
-					} else if (key === 'newPassword') {
-						user.updatePassword(data[key]).then(() => {
-							delete data[key]
-							this.setState({ msg: 'Updated Password, ' })
-						})
-					} else if (key === 'email') {
-						if (data[key] !== this.state.currentUser.email) {
-							user.updateEmail(data[key]).then(() => {
-								delete data[key]
-								// user.sendEmailVerification()
-								this.setState({ msg: this.state.msg + 'Updated Email' })
-							})
-						} else {
-							delete data[key]
-						}
-					}
-				}
-				dataAuth = { ...data, displayName: data.name }
-				return dataAuth
-			})
-			.then(dataAuth => {
-				console.log(dataAuth)
-				user.updateProfile({
-					...dataAuth
+			.where('username', '==', data.username)
+			.get()
+			.then(querySnapShot => {
+				querySnapShot.forEach(doc => {
+					console.log(doc.data())
 				})
+				if (querySnapShot.docs.length > 0 && querySnapShot.docs[0].id !== this.state.currentUser.id) {
+					console.log(querySnapShot.docs.data(), 'test')
+					alert('The username already exists')
+					throw Error()
+				}
 			})
 			.then(() => {
-				this.fetchCurrentUser(user)
-			})
-			.then(() => {
-				alert('Updates were successfull! ')
-				console.log(this.state.msg)
-			})
-			.catch(error => {
-				console.log('you done goofed')
+				fire
+					.collection('users')
+					.doc(this.state.currentUser.id)
+					.set(
+						{
+							...data,
+							newPassword: ''
+						},
+						{ merge: true }
+					)
+					.then(() => {
+						let dataAuth = {}
+						for (const key in data) {
+							if (key === 'address') {
+								delete data[key]
+							} else if (key === 'newPassword') {
+								user.updatePassword(data[key]).then(() => {
+									delete data[key]
+									this.setState({ msg: 'Updated Password, ' })
+								})
+							} else if (key === 'email') {
+								if (data[key] !== this.state.currentUser.email) {
+									user.updateEmail(data[key]).then(() => {
+										delete data[key]
+										// user.sendEmailVerification()
+										this.setState({ msg: this.state.msg + 'Updated Email' })
+									})
+								} else {
+									delete data[key]
+								}
+							}
+						}
+						dataAuth = { ...data, displayName: data.name }
+						return dataAuth
+					})
+					.then(dataAuth => {
+						console.log(dataAuth)
+						user.updateProfile({
+							...dataAuth
+						})
+					})
+					.then(() => {
+						this.fetchCurrentUser(user)
+					})
+					.then(() => {
+						alert('Updates were successfull! ')
+						console.log(this.state.msg)
+					})
+					.catch(error => {
+						console.log('you done goofed')
+					})
 			})
 	}
 

@@ -29,11 +29,7 @@ class Contacts extends Component {
 						<p>In here u can see your contacts: </p>
 					</div>
 
-					{Array.isArray(this.props.currentUser.friends) && this.props.currentUser.friends.length > 0 ? (
-						<AddForm delete={true} removeUser={this.removeFriend} users={this.props.currentUser.friends} />
-					) : (
-						<h2>Unfortunately you have no friends... YET!!! </h2>
-					)}
+					{Array.isArray(this.props.currentUser.friends) && this.props.currentUser.friends.length > 0 ? <AddForm delete={true} removeUser={this.removeFriend} users={this.props.currentUser.friends} /> : <h2>Unfortunately you have no friends... YET!!! </h2>}
 				</div>
 
 				<div className='new-contact-div'>

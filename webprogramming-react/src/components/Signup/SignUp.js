@@ -28,21 +28,39 @@ export default class SignUpForm extends Component {
 
 	handleSubmit = users => {
 		// Tilføjer users til databasen
-
-		firebase
-			.auth()
-			.createUserWithEmailAndPassword(users.email, users.password)
-			.then(response => {
-				console.log(response.user.email, response.user.displayName)
-				fire
-					.collection('users')
-					.doc(response.user.uid)
-					.set({
-						name: users.name,
-						address: users.address,
-						email: users.email,
-						username: users.username,
-						password: users.password
+		fire
+			.collection('users')
+			.where('username', '==', users.username)
+			.get()
+			.then(querySnapShot => {
+				if (querySnapShot.docs.length > 0) {
+					alert('The username already exists')
+					throw new Error('Username already exist')
+				}
+			})
+			.then(() => {
+				firebase
+					.auth()
+					.createUserWithEmailAndPassword(users.email, users.password)
+					.then(response => {
+						console.log(response.user.email, response.user.displayName)
+						fire
+							.collection('users')
+							.doc(response.user.uid)
+							.set({
+								name: users.name,
+								address: users.address,
+								email: users.email,
+								username: users.username,
+								password: users.password
+							})
+					})
+					.catch(function(error) {
+						// Handle Errors here.
+						var errorCode = error.code
+						var errorMessage = error.message
+						alert(errorCode, errorMessage)
+						// ...
 					})
 			})
 			.catch(function(error) {
@@ -50,9 +68,7 @@ export default class SignUpForm extends Component {
 				var errorCode = error.code
 				var errorMessage = error.message
 				console.log(errorCode, errorMessage)
-				// ...
 			})
-
 		this.setState(this.initialState)
 	}
 
