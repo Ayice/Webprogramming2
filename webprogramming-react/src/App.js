@@ -19,7 +19,8 @@ class App extends Component {
 		this.state = {
 			currentUser: {},
 			allUsers: [],
-			isLoggedIn: false
+			isLoggedIn: false,
+			msg: ''
 			// testImg: ''
 		}
 	}
@@ -32,25 +33,10 @@ class App extends Component {
 		// this.setState({
 		// 	testImg: userAvatar
 		// })
+
 		firebase.auth().onAuthStateChanged(user => {
 			if (user) {
-				fire
-					.collection('users')
-					.doc(user.uid)
-					.get()
-					.then(doc => {
-						// console.log(doc)
-						this.setState({ currentUser: { ...doc.data(), id: doc.id, friends: [] } })
-					})
-					.then(() => {
-						this.setState({
-							isLoggedIn: true
-						})
-						this.fetchFriends()
-					})
-					.catch(err => {
-						alert(err)
-					})
+				this.fetchCurrentUser(user)
 			} else {
 				this.setState({
 					currentUser: {},
@@ -59,6 +45,26 @@ class App extends Component {
 			}
 		})
 		this.fetchUsers()
+	}
+
+	fetchCurrentUser(user) {
+		fire
+			.collection('users')
+			.doc(user.uid)
+			.get()
+			.then(doc => {
+				// console.log(doc)
+				this.setState({ currentUser: { ...doc.data(), id: doc.id, friends: [] } })
+			})
+			.then(() => {
+				this.setState({
+					isLoggedIn: true
+				})
+				this.fetchFriends()
+			})
+			.catch(err => {
+				alert(err)
+			})
 	}
 
 	fetchUsers() {
@@ -171,32 +177,54 @@ class App extends Component {
 	editUser = data => {
 		const user = firebase.auth().currentUser
 		console.log(data)
+
 		fire
 			.collection('users')
 			.doc(this.state.currentUser.id)
 			.set(
 				{
-					...data
+					...data,
+					newPassword: ''
 				},
 				{ merge: true }
 			)
 			.then(() => {
 				let dataAuth = {}
 				for (const key in data) {
-					if (data.hasOwnProperty(key)) {
-						const element = data[key]
+					if (key === 'address') {
+						delete data[key]
+					} else if (key === 'newPassword') {
+						user.updatePassword(data[key]).then(() => {
+							delete data[key]
+							this.setState({ msg: 'Updated Password, ' })
+						})
+					} else if (key === 'email') {
+						if (data[key] !== this.state.currentUser.email) {
+							user.updateEmail(data[key]).then(() => {
+								delete data[key]
+								// user.sendEmailVerification()
+								this.setState({ msg: this.state.msg + 'Updated Email' })
+							})
+						} else {
+							delete data[key]
+						}
 					}
 				}
-
-				console.log(data)
+				dataAuth = { ...data, displayName: data.name }
+				return dataAuth
+			})
+			.then(dataAuth => {
+				console.log(dataAuth)
+				user.updateProfile({
+					...dataAuth
+				})
 			})
 			.then(() => {
-				if (data.newPassword) {
-					user.updateProfile({
-						password: data.newPassword
-					})
-				}
-				alert('User information updated')
+				this.fetchCurrentUser(user)
+			})
+			.then(() => {
+				alert(this.state.msg)
+				console.log(this.state.msg)
 			})
 			.catch(error => {
 				console.log('you done goofed')
@@ -233,7 +261,7 @@ class App extends Component {
 				{ merge: true }
 			)
 			.then(() => {
-				console.log(`Yes! You connected you friend to the chatroom`)
+				alert(`Yes! You connected you friend to the chatroom`)
 			})
 			.catch(err => {
 				console.log(err)
@@ -250,7 +278,7 @@ class App extends Component {
 					<Switch>
 						<Route path='/chatrooms' exact render={props => (this.state.isLoggedIn ? <ChatroomContainer {...props} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
 						<Route path='/chatrooms/chat/:id' exact render={props => (this.state.isLoggedIn ? <Chat {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} addToChat={this.addToChat} /> : <Redirect to='/' />)} />
-						<Route path='/profile' exact render={props => (this.state.isLoggedIn ? <Profile {...props} removeUser={this.removeUser} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
+						<Route path='/profile' exact render={props => (this.state.isLoggedIn ? <Profile {...props} removeUser={this.removeUser} currentUser={this.state.currentUser} editUser={this.editUser} /> : <Redirect to='/' />)} />
 						<Route path='/dashboard' render={props => (this.state.isLoggedIn ? <Dashboard {...props} currentUser={this.state.currentUser} /> : <Redirect to='/' />)} />
 						<Route path='/contacts' render={props => (this.state.isLoggedIn ? <Contacts {...props} currentUser={this.state.currentUser} allUsers={this.state.allUsers} handleSubmit={this.addUser} handleRemove={this.handleRemove} /> : <Redirect to='/' />)} />
 						<Route path='/signup' component={SignUpForm} render={props => (!this.state.isLoggedIn ? <SignUpForm /> : <Redirect to='/dashboard' />)} />

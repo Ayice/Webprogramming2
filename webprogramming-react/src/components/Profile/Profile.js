@@ -24,11 +24,10 @@ class Profile extends Component {
 		}
 
 		for (const key in data) {
-			if (data[key] === '') {
+			if (data[key] === '' || data[key].length < 1) {
 				delete data[key]
 			}
 		}
-		console.log(data)
 		this.props.editUser(data)
 	}
 
