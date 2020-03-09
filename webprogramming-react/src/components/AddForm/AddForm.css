@@ -7,6 +7,11 @@
 	overflow: auto;
 }
 
+.contact-scroll-div h2,
+.contact-scroll-div p {
+	margin: 0 auto;
+}
+
 .contact {
 	width: 80%;
 	margin: 0 auto;

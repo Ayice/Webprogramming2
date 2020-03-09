@@ -28,7 +28,7 @@ class AddForm extends Component {
 				<div className='contact-scroll-div'>
 					{Array.isArray(this.props.users) && this.props.users.length > 0 ? (
 						this.props.users.map(user => (
-							<div onClick={e => this.showHiddenInfo(user.username, e)} className='contact' key={user.username}>
+							<div onClick={e => this.showHiddenInfo(user.username, e)} className='contact' key={user.email}>
 								<div className='contact-avatar'>
 									<span></span>
 								</div>
