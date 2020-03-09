@@ -82,13 +82,9 @@ class Chat extends Component {
 			.doc(this.state.currentChatroom.id)
 			.collection('messages')
 			.add({
-				/**
-				 * TODO: Kan man compare firebase timestamps ?
-				 * Det kan man
-				 *
-				 */
 				text: this.state.text,
 				sender: this.props.currentUser.username,
+				// sender_id: this.props.currentUser.id,
 				timestamp: timestamp,
 				compareTimestamp: firebase.firestore.Timestamp.now()
 			})
