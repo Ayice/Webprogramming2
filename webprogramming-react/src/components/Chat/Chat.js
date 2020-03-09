@@ -67,6 +67,7 @@ class Chat extends Component {
 	}
 
 	addToChat = friend => {
+		// TODO: Send userId med, så vi ikke får problemer med Username
 		this.props.addToChat(friend, this.state.currentChatroom.id)
 	}
 
