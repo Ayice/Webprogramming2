@@ -13,8 +13,6 @@
 }
 
 .contact {
-	width: 80%;
-	margin: 0 auto;
 }
 
 .new-contact-div-contact {
@@ -34,6 +32,7 @@
 
 .contact-info {
 	width: 70%;
+	line-height: 2em;
 }
 
 .contact-info_hide {
@@ -47,13 +46,14 @@
 	position: relative;
 	display: flex;
 	flex-flow: row wrap;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 	padding: 1em;
 	width: 50%;
 	max-height: 95px;
 	box-shadow: 3px 5px 10px rgb(211, 211, 211);
 	overflow: hidden;
 	transition: all 0.3s ease;
+	margin: 0 auto;
 }
 
 .contact > * {

@@ -16,11 +16,11 @@ class ChatroomContainer extends Component {
 		}
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
-		if (nextProps.currentUser !== this.props.currentUser) {
-			this.getChatrooms(nextProps)
-		}
-	}
+	// UNSAFE_componentWillReceiveProps(nextProps) {
+	// 	if (nextProps.currentUser !== this.props.currentUser) {
+	// 		this.getChatrooms(nextProps)
+	// 	}
+	// }
 
 	componentDidMount() {
 		if (this.props.currentUser.email) {
@@ -28,13 +28,13 @@ class ChatroomContainer extends Component {
 		}
 	}
 
-	getChatrooms(nextProps) {
+	getChatrooms(props) {
 		let chatrooms = []
 		let chatRoomIds = []
 		// let members = []
 		fire
 			.collection('user-rooms')
-			.doc(nextProps.currentUser.id)
+			.doc(props.currentUser.id)
 			.get()
 			.then(doc => {
 				chatRoomIds = Object.keys(doc.data())
@@ -52,20 +52,6 @@ class ChatroomContainer extends Component {
 						.then(chatRoomData => {
 							let data = { id: chatRoomData.id, ...chatRoomData.data() }
 
-							// if (data.members.length > 0) {
-							// 	data.members.forEach(element => {
-							// 		members = []
-							// 		element.get().then(doc => {
-							// 			// console.log(doc.data())
-							// 			members.push({ name: doc.data().name })
-							// 		})
-							// 	})
-							// 	data.members = members
-							// 	chatrooms.push({ ...data })
-							// } else {
-							// console.log(data)
-							// console.log(chatrooms)
-							// }
 							chatrooms.push({ ...data })
 
 							this.setState({
@@ -80,6 +66,7 @@ class ChatroomContainer extends Component {
 				})
 			})
 	}
+
 	removeFromChat = (userId, chatroomId, e) => {
 		console.log(chatroomId)
 		fire
