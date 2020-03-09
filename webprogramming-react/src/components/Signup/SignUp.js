@@ -51,17 +51,14 @@ export default class SignUpForm extends Component {
 								name: users.name,
 								address: users.address,
 								email: users.email,
-								username: users.username,
-								password: users.password
+								username: users.username
+								// password: users.password
 							})
 					})
-					.catch(function(error) {
-						// Handle Errors here.
-						var errorCode = error.code
-						var errorMessage = error.message
-						alert(errorCode, errorMessage)
-						// ...
-					})
+			})
+			.then(() => {
+				this.setState(this.initialState)
+				alert("You created a user AND you're already logged in!")
 			})
 			.catch(function(error) {
 				// Handle Errors here.
@@ -69,7 +66,6 @@ export default class SignUpForm extends Component {
 				var errorMessage = error.message
 				console.log(errorCode, errorMessage)
 			})
-		this.setState(this.initialState)
 	}
 
 	render() {

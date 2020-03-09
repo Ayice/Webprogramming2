@@ -37,6 +37,9 @@ class App extends Component {
 		firebase.auth().onAuthStateChanged(user => {
 			if (user) {
 				this.fetchCurrentUser(user)
+				this.setState({
+					isLoggedIn: true
+				})
 			} else {
 				this.setState({
 					currentUser: {},
@@ -57,30 +60,10 @@ class App extends Component {
 				this.setState({ currentUser: { ...doc.data(), id: doc.id, friends: [] } })
 			})
 			.then(() => {
-				this.setState({
-					isLoggedIn: true
-				})
 				this.fetchFriends()
 			})
 			.catch(err => {
 				alert(err)
-			})
-	}
-
-	fetchUsers() {
-		let allUsers = []
-		fire
-			.collection('users')
-			.get()
-			.then(users => {
-				users.forEach(doc => {
-					allUsers.push({ id: doc.id, ...doc.data() })
-				})
-			})
-			.then(() => {
-				this.setState({
-					allUsers: allUsers
-				})
 			})
 	}
 
@@ -120,6 +103,23 @@ class App extends Component {
 				currentUser: { ...this.state.currentUser, friends: [] }
 			})
 		}
+	}
+
+	fetchUsers() {
+		let allUsers = []
+		fire
+			.collection('users')
+			.get()
+			.then(users => {
+				users.forEach(doc => {
+					allUsers.push({ id: doc.id, ...doc.data() })
+				})
+			})
+			.then(() => {
+				this.setState({
+					allUsers: allUsers
+				})
+			})
 	}
 
 	addUser = friend => {
@@ -185,7 +185,7 @@ class App extends Component {
 				querySnapShot.forEach(doc => {
 					console.log(doc.data())
 				})
-				if (querySnapShot.docs.length > 0 && querySnapShot.docs[0].id !== this.state.currentUser.id) {
+				if (querySnapShot.docs.length > 0 && querySnapShot.docs[0].id !== user.uid) {
 					console.log(querySnapShot.docs.data(), 'test')
 					alert('The username already exists')
 					throw Error()
