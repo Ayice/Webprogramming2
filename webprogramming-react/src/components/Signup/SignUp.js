@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
-import { fire } from '../../firebase'
+import { fire, storage } from '../../firebase'
 import './SignUp.css'
 
 export default class SignUpForm extends Component {
@@ -12,7 +12,8 @@ export default class SignUpForm extends Component {
 			address: '',
 			email: '',
 			username: '',
-			password: ''
+			password: '',
+			avatar: null
 		}
 
 		this.state = this.initialState
@@ -57,6 +58,9 @@ export default class SignUpForm extends Component {
 					})
 			})
 			.then(() => {
+				this.uploadAvatar()
+			})
+			.then(() => {
 				this.setState(this.initialState)
 				alert("You created a user AND you're already logged in!")
 			})
@@ -66,6 +70,32 @@ export default class SignUpForm extends Component {
 				var errorMessage = error.message
 				console.log(errorCode, errorMessage)
 			})
+	}
+
+	uploadAvatar(event) {
+		event.preventDefault()
+		const currentUserId = this.state.currentUser.id
+		const avatar = this.state.avatar
+		storage
+			.child('users/' + currentUserId)
+			.put(avatar)
+			.then(() => console.log('hell ye'))
+			.catch(err => console.log(err))
+	}
+
+	imageUpload = e => {
+		const file = e.target.files
+		// const fileName = file[0].name
+
+		this.setState({
+			avatar: file[0]
+		})
+
+		// storage
+		// 	.child('users/' + this.state.currentUser.id)
+		// 	.put(file[0])
+		// 	.then(() => console.log('hell ye'))
+		// 	.catch(err => console.log(err))
 	}
 
 	render() {
@@ -105,6 +135,11 @@ export default class SignUpForm extends Component {
 						<div>
 							<input type='password' name='password' id='password' value={password} placeholder='Enter a valid password' onChange={this.handleChange} className='inputContainer' />
 						</div>
+
+						<div>
+							<input type='file' accept='image/x-png,image/gif,image/jpeg' onChange={this.imageUpload} />
+						</div>
+
 						<div>
 							<button type='submit' value='Submit' className='signupButton'>
 								Submit

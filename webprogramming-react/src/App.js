@@ -20,7 +20,8 @@ class App extends Component {
 			currentUser: {},
 			allUsers: [],
 			isLoggedIn: false,
-			msg: ''
+			msg: '',
+			avatar: null
 			// testImg: ''
 		}
 	}
@@ -312,7 +313,11 @@ class App extends Component {
 								)
 							}
 						/>
-						<Route path='/signup' component={SignUpForm} render={props => (!this.state.isLoggedIn ? <SignUpForm /> : <Redirect to='/dashboard' />)} />
+						<Route
+							path='/signup'
+							component={SignUpForm}
+							render={props => (!this.state.isLoggedIn ? <SignUpForm imageUpload={this.imageUpload} uploadAvatar={this.uploadAvatar} /> : <Redirect to='/dashboard' />)}
+						/>
 						<Route path='/' exact render={props => (!this.state.isLoggedIn ? <LoginForm /> : <Redirect to='/dashboard' />)} />
 					</Switch>
 				</Router>
