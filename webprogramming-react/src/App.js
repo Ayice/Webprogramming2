@@ -60,6 +60,7 @@ class App extends Component {
 				// console.log(doc)
 				this.setState({ currentUser: { ...doc.data(), id: doc.id, friends: [] } })
 			})
+			.then(() => {})
 			.then(() => {
 				this.fetchFriends()
 			})

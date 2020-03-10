@@ -12,9 +12,6 @@
 	margin: 0 auto;
 }
 
-.contact {
-}
-
 .new-contact-div-contact {
 	position: relative;
 	overflow: auto;
@@ -75,6 +72,12 @@
 	height: 60px;
 	width: 60px;
 	box-shadow: 3px 5px 10px rgb(211, 211, 211);
+	overflow: hidden;
+	line-height: 90px;
+}
+
+.contact-avatar span img {
+	width: 100%;
 }
 
 .contact-delete,

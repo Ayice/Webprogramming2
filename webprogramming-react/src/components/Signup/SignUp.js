@@ -13,11 +13,13 @@ export default class SignUpForm extends Component {
 			email: '',
 			username: '',
 			password: '',
-			avatar: null
+			avatar: undefined,
+			avatarURL: ''
 		}
 
 		this.state = this.initialState
 		this.handleSubmit = this.handleSubmit.bind(this)
+		this.imageUpload = this.imageUpload.bind(this)
 	}
 
 	handleChange = event => {
@@ -39,29 +41,34 @@ export default class SignUpForm extends Component {
 					throw new Error('Username already exist')
 				}
 			})
-			.then(() => {
+			.then(response => {
 				firebase
 					.auth()
 					.createUserWithEmailAndPassword(users.email, users.password)
 					.then(response => {
-						console.log(response.user.email, response.user.displayName)
-						fire
-							.collection('users')
-							.doc(response.user.uid)
-							.set({
-								name: users.name,
-								address: users.address,
-								email: users.email,
-								username: users.username
-								// password: users.password
-							})
+						this.uploadAvatar(response)
+						return response
+					})
+					.then(response => {
+						console.log(this.state.avatarURL)
+						setTimeout(() => {
+							fire
+								.collection('users')
+								.doc(response.user.uid)
+								.set({
+									name: users.name,
+									address: users.address,
+									email: users.email,
+									username: users.username,
+									avatar: this.state.avatarURL
+									// password: users.password
+								})
+						}, 1000)
 					})
 			})
+
 			.then(() => {
-				this.uploadAvatar()
-			})
-			.then(() => {
-				this.setState(this.initialState)
+				// this.setState(this.initialState)
 				alert("You created a user AND you're already logged in!")
 			})
 			.catch(function(error) {
@@ -72,21 +79,32 @@ export default class SignUpForm extends Component {
 			})
 	}
 
-	uploadAvatar(event) {
-		event.preventDefault()
-		const currentUserId = this.state.currentUser.id
-		const avatar = this.state.avatar
+	uploadAvatar(response) {
+		const currentUserId = response.user.uid
+		console.log(currentUserId)
+
+		// const avatar = this.state.avatar
+		console.log(this.state.avatar)
 		storage
 			.child('users/' + currentUserId)
-			.put(avatar)
+			.put(this.state.avatar)
 			.then(() => console.log('hell ye'))
+			.then(() => {
+				storage
+					.child('users/' + currentUserId)
+					.getDownloadURL()
+					.then(url => {
+						this.setState({
+							avatarURL: url
+						})
+					})
+			})
 			.catch(err => console.log(err))
 	}
 
 	imageUpload = e => {
 		const file = e.target.files
 		// const fileName = file[0].name
-
 		this.setState({
 			avatar: file[0]
 		})

@@ -30,7 +30,9 @@ class AddForm extends Component {
 						this.props.users.map(user => (
 							<div onClick={e => this.showHiddenInfo(user.username, e)} className='contact' key={user.email}>
 								<div className='contact-avatar'>
-									<span></span>
+									<span>
+										<img src={user.avatar} alt={user.name} />
+									</span>
 								</div>
 
 								<div className='contact-info'>
