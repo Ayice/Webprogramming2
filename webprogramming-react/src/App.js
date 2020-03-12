@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { fire, storage } from './firebase'
 import firebase from 'firebase'
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/Navbar/Navbar'
 import LoginForm from './components/Login/Login'
@@ -287,7 +287,7 @@ class App extends Component {
 
 	render() {
 		return (
-			<Router basename={'/react-exam'}>
+			<Router>
 				<div className='App'>
 					{/* <img src={testImg} alt='hej' /> */}
 					<Navbar currentUser={this.state.currentUser} />
