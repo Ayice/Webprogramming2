@@ -47,6 +47,10 @@ class Profile extends Component {
 		return (
 			<div className='profileContainer'>
 				<h1>{this.props.currentUser.name}</h1>
+
+				<div className='profile-img'>
+					<img src={this.props.currentUser.avatar} alt={this.props.currentUser.name} />
+				</div>
 				<form onSubmit={this.editUser} className='profileForm'>
 					<div className='profileFormfield'>
 						<label>Name</label>

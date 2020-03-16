@@ -67,3 +67,15 @@ form button {
 .manageContactsButton:hover {
 	background-color: rgb(41, 107, 168);
 }
+
+.profile-img {
+	width: 50%;
+	margin: 0 auto;
+	text-align: center;
+	max-height: 350px;
+	overflow: hidden;
+}
+
+.profile-img img {
+	width: 50%;
+}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
+import { Redirect } from 'react-router-dom'
 import { fire, storage } from '../../firebase'
 import './SignUp.css'
 
@@ -14,7 +15,8 @@ export default class SignUpForm extends Component {
 			username: '',
 			password: '',
 			avatar: undefined,
-			avatarURL: ''
+			avatarURL: '',
+			redirect: null
 		}
 
 		this.state = this.initialState
@@ -45,31 +47,32 @@ export default class SignUpForm extends Component {
 				firebase
 					.auth()
 					.createUserWithEmailAndPassword(users.email, users.password)
-					.then(response => {
-						this.uploadAvatar(response)
+					.then(async response => {
+						await this.uploadAvatar(response)
 						return response
 					})
 					.then(response => {
-						console.log(this.state.avatarURL)
-						setTimeout(() => {
-							fire
-								.collection('users')
-								.doc(response.user.uid)
-								.set({
-									name: users.name,
-									address: users.address,
-									email: users.email,
-									username: users.username,
-									avatar: this.state.avatarURL
-									// password: users.password
-								})
-						}, 1000)
+						console.log('for hurtigt')
+						fire
+							.collection('users')
+							.doc(response.user.uid)
+							.set({
+								name: users.name,
+								address: users.address,
+								email: users.email,
+								username: users.username,
+								avatar: this.state.avatarURL
+								// password: users.password
+							})
+					})
+					.then(() => {
+						this.setState({ redirect: '/dashboard' })
 					})
 			})
 
 			.then(() => {
 				// this.setState(this.initialState)
-				alert("You created a user AND you're already logged in!")
+				alert('You created a user')
 			})
 			.catch(function(error) {
 				// Handle Errors here.
@@ -81,7 +84,7 @@ export default class SignUpForm extends Component {
 
 	uploadAvatar(response) {
 		const currentUserId = response.user.uid
-		console.log(currentUserId)
+		console.log('for langsom')
 
 		// const avatar = this.state.avatar
 		console.log(this.state.avatar)
@@ -117,6 +120,9 @@ export default class SignUpForm extends Component {
 	}
 
 	render() {
+		if (this.state.redirect) {
+			return <Redirect to={this.state.redirect} />
+		}
 		const { name, address, email, username, password } = this.state
 		return (
 			// <input name={input.name} value={input.name} />
