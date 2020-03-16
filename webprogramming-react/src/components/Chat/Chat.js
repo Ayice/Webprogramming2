@@ -84,7 +84,7 @@ class Chat extends Component {
 			.add({
 				text: this.state.text,
 				sender: this.props.currentUser.username,
-				// sender_id: this.props.currentUser.id,
+				sender_id: this.props.currentUser.id,
 				timestamp: timestamp,
 				compareTimestamp: firebase.firestore.Timestamp.now()
 			})
@@ -116,6 +116,7 @@ class Chat extends Component {
 
 	render() {
 		const { messages, text, currentChatroom } = this.state
+		const { currentUser } = this.props
 
 		// if (this.state.toDashboard)
 
@@ -123,14 +124,14 @@ class Chat extends Component {
 			<div className='chatroom-container'>
 				<div id='chat-section'>
 					<div className='chat-header'>
-						<h2>{this.state.currentChatroom.name}</h2>
+						<h2>{currentChatroom.name}</h2>
 					</div>
 
 					<div id='message-container'>
 						{messages.map((message, index) => {
 							return (
-								<div className={'message ' + (this.props.currentUser.username === message.sender ? 'sent' : 'received')} key={index}>
-									{message.sender}: {message.text}
+								<div className={'message ' + (currentUser.id === message.sender_id ? 'sent' : 'received')} key={index}>
+									{currentUser.id === message.sender_id ? currentUser.username : message.sender}: {message.text}
 								</div>
 							)
 						})}

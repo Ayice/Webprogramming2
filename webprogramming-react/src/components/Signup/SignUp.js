@@ -22,6 +22,7 @@ export default class SignUpForm extends Component {
 		this.state = this.initialState
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.imageUpload = this.imageUpload.bind(this)
+		this.handleSubmit = this.handleSubmit.bind(this)
 	}
 
 	handleChange = event => {
@@ -43,63 +44,53 @@ export default class SignUpForm extends Component {
 					throw new Error('Username already exist')
 				}
 			})
-			.then(response => {
+			.then(() => {
 				firebase
 					.auth()
 					.createUserWithEmailAndPassword(users.email, users.password)
 					.then(async response => {
-						await this.uploadAvatar(response)
-						return response
+						this.uploadAvatar(response, users)
 					})
-					.then(response => {
-						console.log('for hurtigt')
-						fire
-							.collection('users')
-							.doc(response.user.uid)
-							.set({
-								name: users.name,
-								address: users.address,
-								email: users.email,
-								username: users.username,
-								avatar: this.state.avatarURL
-								// password: users.password
-							})
+					.catch(function(error) {
+						// Handle Errors here.
+						var errorCode = error.code
+						var errorMessage = error.message
+						alert(errorCode, errorMessage)
 					})
-					.then(() => {
-						this.setState({ redirect: '/dashboard' })
-					})
-			})
-
-			.then(() => {
-				// this.setState(this.initialState)
-				alert('You created a user')
-			})
-			.catch(function(error) {
-				// Handle Errors here.
-				var errorCode = error.code
-				var errorMessage = error.message
-				console.log(errorCode, errorMessage)
 			})
 	}
 
-	uploadAvatar(response) {
+	createUserDb = (avatarRes, userInfo, avatarUrl) => {
+		fire
+			.collection('users')
+			.doc(avatarRes)
+			.set({
+				name: userInfo.name,
+				address: userInfo.address,
+				email: userInfo.email,
+				username: userInfo.username,
+				avatar: avatarUrl
+				// password: users.password
+			})
+		console.log('hej')
+	}
+
+	uploadAvatar(response, userInfo) {
 		const currentUserId = response.user.uid
-		console.log('for langsom')
 
 		// const avatar = this.state.avatar
-		console.log(this.state.avatar)
 		storage
 			.child('users/' + currentUserId)
 			.put(this.state.avatar)
-			.then(() => console.log('hell ye'))
 			.then(() => {
 				storage
 					.child('users/' + currentUserId)
 					.getDownloadURL()
 					.then(url => {
-						this.setState({
-							avatarURL: url
-						})
+						this.createUserDb(response.user.uid, userInfo, url)
+					})
+					.then(() => {
+						this.props.loggedIn()
 					})
 			})
 			.catch(err => console.log(err))
@@ -111,12 +102,6 @@ export default class SignUpForm extends Component {
 		this.setState({
 			avatar: file[0]
 		})
-
-		// storage
-		// 	.child('users/' + this.state.currentUser.id)
-		// 	.put(file[0])
-		// 	.then(() => console.log('hell ye'))
-		// 	.catch(err => console.log(err))
 	}
 
 	render() {
