@@ -12,12 +12,12 @@ class Dashboard extends Component {
 			links: [
 				{ name: 'Contacts', path: '/contacts' },
 				{ name: 'Chatrooms', path: '/chatrooms' },
-				{ name: 'Profile', path: '/profile' },
-				{ name: 'Chat', path: '/chat' }
+				{ name: 'Profile', path: '/profile' }
 			],
 			friends: []
 		}
 	}
+
 	componentDidUpdate() {
 		if (this.state.friends !== this.props.currentUser.friends) {
 			this.setState({
